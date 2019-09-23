@@ -1,7 +1,15 @@
-import sessionStorage from 'redux-persist/lib/storage/session'
+import sessionStorage from 'redux-persist/lib/storage/session';
+import localStorage from 'redux-persist/lib/storage';
 
-export default {
+export const rootPersistConfig = {
   key: 'root',
   storage: sessionStorage,
-  blacklist: ['location']
+  whitelist: ['login']
 };
+
+export const localStorePersistConfig = {
+  key: 'localStore',
+  storage: localStorage
+};
+
+

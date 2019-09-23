@@ -15,6 +15,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 
 
+// eslint-disable-next-line no-unused-vars
 const { store, persistor, task } = configStore();
 
 

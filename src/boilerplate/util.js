@@ -3,6 +3,7 @@ import {Seq, isImmutable} from 'immutable';
 export const plusSecondToNow= (second) => (new Date()).getTime()+(second)*1000;
 
 
+
 export function fromJSGreedy(js) {
   return typeof js !== 'object' || js === null ? js :
       Array.isArray(js) ?

@@ -44,8 +44,9 @@ export const ActionGenerators = ({nameSpace,actions,initState,reduceFunc})=>{
   //console.log(actionObjMap);
   actGens.nameSpace = nameSpace;
   actGens.initState = initState;
+  actGens.selector = (state) =>(state[nameSpace]);
   actGens.reduceFunc = reduceFunc;
-  actGens.reducer = new reducer({actGens});
+  actGens.reducer = reducer({actGens});
 
 
   return actGens;
