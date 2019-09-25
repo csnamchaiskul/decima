@@ -15,7 +15,7 @@ function* getToken(action){
   try {
 
     const response = yield call(postApi,
-      { url: '/auth/signin',
+      { url: '/auth/adminSignin',
               body: { email:action.email, password:action.password}
             }
     );
