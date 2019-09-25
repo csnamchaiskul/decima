@@ -3,15 +3,17 @@ const aliyunTheme = require('@ant-design/aliyun-theme');
 
 module.exports = override(
     fixBabelImports('import', {
-        libraryName: 'antd',
-        libraryDirectory: 'es',
-        style: true,
+      libraryName: 'antd',
+      libraryDirectory: 'es',
+      style: true,
     }),
 
     addLessLoader({
-        javascriptEnabled: true,
-
-        modifyVars: aliyunTheme,
+      javascriptEnabled: true,
+      modifyVars:{
+        '@table-padding-vertical':'10px',
+        '@layout-body-background': '@white'
+      }
 
     }),
 

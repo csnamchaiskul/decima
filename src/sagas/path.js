@@ -2,7 +2,7 @@ import { call,put,select,takeEvery } from 'redux-saga/effects';
 
 import { plusSecondToNow } from '../boilerplate/util';
 import { genTakeEvery } from '../boilerplate/saga';
-import loginActionGens from '../actions/login';
+import appActionGens from '../actions/app';
 import { postApi } from '../services/apiService'
 import jwtDecode from 'jwt-decode';
 
@@ -12,4 +12,4 @@ function* doLogin(action){
 
 }
 
-export default [takeEvery("PATH:Login", doLogin)];
+export default  [takeEvery("PATH:Login", doLogin)];

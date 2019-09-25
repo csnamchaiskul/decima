@@ -9,6 +9,7 @@ const actGens =  ActionGenerators({
 
   initState: {
     disabled: false,
+    disableMessage: "",
     loading: false,
     loadingMessage: 'Loading...'
 
@@ -34,6 +35,9 @@ const actGens =  ActionGenerators({
       reduceFunc:
         ({initState}) => initState,
     },
+    doLoading: { reduceFunc:
+                  ({state,action})=> newState(state,{ loading: true ,
+                                                      loadingMessage: action.loadingMessage})},
     setLoading: { reduceFunc: 'set' },
     setLoadingMessage: { reduceFunc: 'set'},
   }

@@ -18,7 +18,7 @@ export default function Application(props){
     </Col></Row>
 
     <Row><Col span={12}>
-      <Tabs defaultActiveKey={1} type="card">
+      <Tabs defaultActiveKey={'1'} type="card">
         <TabPane tab={'Application'} key={1}>
           <Row><Col span={12}></Col></Row>
         </TabPane>

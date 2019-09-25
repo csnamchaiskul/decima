@@ -4,7 +4,7 @@ import { useSelector, useDispatch, connect } from 'react-redux';
 import Spin from './component/Spinner';
 
 import './App.css';
-import { routedContainer } from './config/configRoute'
+import { routedContainer } from './config/configRoute';
 import mapDispatchToProps from "react-redux/lib/connect/mapDispatchToProps";
 
 

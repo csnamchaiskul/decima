@@ -11,10 +11,10 @@ import { createBrowserHistory as createHistory } from 'history'
 const config =
   {
     "PATH:Router": {path:'/', container:<Redirect/>},
-    "PATH:Main": {path:'/main', container: <Main child={<ApplicationList/>}/>},
+    "PATH:Main": {path:'/main', container: <Main><ApplicationList/></Main>},
     "PATH:Login": {path: '/login', container: <Login/>},
-    "PATH:Application": {path: '/application/:userId', container: <Main child={<Application/>}/>},
-    "PATH:Admin": {path:'/identify', container: <div/>},
+    "PATH:Application": {path: '/application/:userId', container: (<Main><Application/></Main>)},
+    "PATH:Admin": {path:'/admin', container: <Main><div/></Main>},
 
   };
 

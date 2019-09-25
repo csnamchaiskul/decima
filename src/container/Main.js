@@ -19,11 +19,15 @@ export default function Main(props){
 
 
 
-  return (<Layout>
+  return (<Layout  style={{ minHeight: '100vh' }}>
       <AppHeader/>
       <Layout>
         <AppSider/>
-        <Content>{props.child}</Content>
+        <Layout>
+          <Content>
+            {props.children}
+          </Content>
+        </Layout>
       </Layout>
     <Footer/>
   </Layout>);
