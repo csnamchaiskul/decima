@@ -19,13 +19,15 @@ const actGens=  ActionGenerators({
           accessToken:action.accessToken,
           accessTokenExpired: action.accessTokenExpired,
           userId: action.userId,
+          authorities: action.authorities,
         })
       },
     initLogin:
       { reduceFunc: ({state,action})=>newState(state,{
           userId: null,
           accessToken: null,
-          accessTokenExpired: null
+          accessTokenExpired: null,
+          authorities:[]
         })},
 
 
@@ -34,7 +36,8 @@ const actGens=  ActionGenerators({
   initState: {
     accessToken:'',
     accessTokenExpired: null,
-    userId: null
+    userId: null,
+    authorities: []
   }
 });
 

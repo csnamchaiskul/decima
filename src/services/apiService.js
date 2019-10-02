@@ -26,6 +26,8 @@ const getAxios = (accessToken,contentType) => {
 
   };
 
+  //console.log(accessToken);
+
   (accessToken) && Object.assign(config,{
     headers: {
       'Authorization': 'Bearer ' + accessToken,
@@ -48,20 +50,21 @@ export const postApi = ({url,accessToken,contentType,body}) => {
     ).then((res) => (loaded() && res.data)).catch((e) =>
       {
         loaded();
-
+        throw e;
       });
 
 };
 
 export const putApi = ({url,accessToken,contentType,body}) => {
   loading();
-  try {
-    return getAxios(accessToken, contentType).put(genURL(url), body
-    ).then((res) => (loaded() && res.data));
-  } catch(e){
+
+  return getAxios(accessToken, contentType).put(genURL(url), body
+  ).then((res) => (loaded() && res.data)).catch(e => {
+
     loaded();
     throw e;
-  }
+
+  });
 };
 
 export const getApi = ({accessToken,url, ...params}) => {
@@ -69,7 +72,12 @@ export const getApi = ({accessToken,url, ...params}) => {
   return getAxios(accessToken).get(
     genURL(url),
     {params: {...params}}
-  ).then((res) => (loaded() && res.data));
+  ).then((res) => (loaded() && res.data)).catch(e => {
+
+    loaded();
+    throw e;
+
+  });
 
 };
 
@@ -78,7 +86,12 @@ export const deleteApi = ({accessToken,url, ...params}) => {
   return getAxios(accessToken).delete(
     genURL(url),
     {params: {...params}}
-  ).then((res) => (loaded() && res.data));
+  ).then((res) => (loaded() && res.data)).catch(e => {
+
+    loaded();
+    throw e;
+
+  });
 
 };
 

@@ -57,7 +57,9 @@ export const genReduceMap = (actGens,funcMap) =>{
                             const valueKey = funcMap[key].split(' ')[1] || key.slice(3,4).toLowerCase()+key.slice(4);
                             //console.log(`valueKey=${valueKey}`);
 
-                            return acc.set(actGens.get(key).type,({state,action})=>newState(state,{[valueKey]:action[valueKey]}));
+                            return acc.set(actGens.get(key).type,
+                                ({state,action})=>newState(state,
+                                  {[valueKey]:action[valueKey]}));
 
                           } else
                             return acc;

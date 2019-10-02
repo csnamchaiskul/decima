@@ -28,6 +28,7 @@ function* getToken(action){
       accessToken: response.result.accessToken,
       accessTokenExpired: jwt.exp-300,
       userId: jwt.sub,
+      authorities: response.result.authorities,
 
 
       //clientAccessTokenExpired: plusSecondToNow(result.expiresIn-300)

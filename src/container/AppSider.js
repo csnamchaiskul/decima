@@ -9,6 +9,7 @@ const { SubMenu } = Menu;
 export default function AppHeader(props) {
 
   const isLogin = !!useSelector((state)=>state.login.accessToken);
+  const isAdmin = !!useSelector((state)=>state.login.authorities).find((i)=>i==='ROLE_CRMADMIN');
   const dispatch = useDispatch();
   const handleClick = (e) => {
 
@@ -42,13 +43,13 @@ export default function AppHeader(props) {
             Application
           </span>
       </Menu.Item>
-      <Menu.Item
+      {(isAdmin) && (<Menu.Item
         key={"admin"}>
         <Icon type="control"/>
         <span>
             Admin
           </span>
-      </Menu.Item>
+      </Menu.Item>)}
       <Menu.Item
         key={"report"}>
         <Icon type="fund"/>
