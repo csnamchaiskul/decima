@@ -8,7 +8,7 @@ export const log = (effect, message) => {
 };
 
 export const takeEvery = (actionGens,func)=> {
-  return reduxTakeEvery(actionGens.get(func.name).type,func);
+  return reduxTakeEvery(actionGens[func.name].type,func);
 };
 
 export const genTakeEvery = (actionGens, funcAr)=> {

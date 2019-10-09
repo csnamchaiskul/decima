@@ -1,4 +1,3 @@
-import { fromJS,Map } from 'immutable'
 import reducer from '../reducer'
 export const prefix = reducers => Object.values(reducers).map((o)=>o.nameSpace);
 
@@ -12,7 +11,7 @@ export const ActionGenerators = ({nameSpace,actions,initState,reduceFunc})=>{
       .map((k)=>Object.assign(actions[k],{subType:k}))
       .reduce(
         (actionMap,{subType,paramsFunc,reduceFunc})=>
-                actionMap.merge({[subType]:{
+                Object.assign(actionMap,{[subType]:{
 
           set nameSpace(ns) {},
           get nameSpace(){ return nameSpace},
@@ -38,10 +37,9 @@ export const ActionGenerators = ({nameSpace,actions,initState,reduceFunc})=>{
                 (typeof params === 'object')? Object.assign(action,params):
                                               action;
           }
-        }}),
-      Map({}));
+        }}), {});
 
-  //console.log(actionObjMap);
+  //console.log(actGens);
   actGens.nameSpace = nameSpace;
   actGens.initState = initState;
   actGens.selector = (state) =>(state[nameSpace]);

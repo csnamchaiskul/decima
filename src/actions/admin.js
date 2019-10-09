@@ -1,14 +1,5 @@
 import { ActionGenerators} from '../boilerplate/action';
-import { newState} from '../boilerplate/reducer';
-
-const thisInitState = {
-  crmUserListLastUpdate:0,
-  crmUserList:[],
-  addUserModal:{
-    visible:false,
-    comfirmLoading: false,
-  }
-};
+//import { newState} from '../boilerplate/reducer';
 
 
 const actGens=  ActionGenerators({
@@ -40,7 +31,7 @@ const actGens=  ActionGenerators({
     setCrmUserList:
       {
 
-        reduceFunc: ({state,action})=>newState(state,{
+        reduceFunc: ({state,action})=>Object.assign(state,{
           crmUserListLastUpdate: new Date().getTime(),
           crmUserList: action.crmUserList,
           addUserModal: { visible: false, confirmLoading: false}
@@ -48,12 +39,19 @@ const actGens=  ActionGenerators({
       },
 
     init:
-      { reduceFunc: ({state,action})=>newState(thisInitState)},
+      { reduceFunc: ({reducer})=>reducer.initState},
 
 
     },
 
-  initState: thisInitState,
+  initState: {
+    crmUserListLastUpdate: 0,
+    crmUserList: [],
+    addUserModal: {
+      visible: false,
+      comfirmLoading: false,
+    },
+  }
 });
 
 export default actGens;

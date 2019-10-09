@@ -1,27 +1,24 @@
-import { isImmutable,Map,fromJS } from 'immutable'
-import { fromJSGreedy } from '../util';
+import produce from "immer";
 
+export default ({actGens})=> {
 
-export const newState= (...states) => Object.assign({},...states);
-
-export const getNameSpace =  (nameSpace) => ((nameSpace) ? nameSpace.replace('reducers.','').toUpperCase() : nameSpace);
-
-
-export default ({actGens,initState,reduceFunc})=> {
 
     //nameSpace = getNameSpace(nameSpace) ;
 
     console.log("Create reducer: "+actGens.nameSpace);
 
-    // console.log(actGens.initState);
+    //console.log(actGens);
 
-    initState = initState || actGens.initState;
-    reduceFunc= reduceFunc || actGens.reduceFunc || genReduceFunc(
-        actGens.reduce((acc,gen)=>((gen.subType)?Object.assign(acc,{ [gen.subType]:gen.reduceFunc }):acc),{})
+    let typeReduceFunc= actGens.reduceFunc || genTypeReduceFunc(
+        Object.values(actGens).reduce(
+          (acc,gen)=>((gen && gen.gen && gen.reduceFunc)? Object.assign(acc,{ [gen.subType]:gen.reduceFunc }):acc),
+          {})
     );
 
+    //console.log(reduceFunc);
 
-    const reducer = (state=initState, action) => {
+
+    const reducer = produce((state, action) => {
 
       //console.log(`action=${action.type} immutable=${isImmutable(action)}`)
 
@@ -31,13 +28,25 @@ export default ({actGens,initState,reduceFunc})=> {
           || !actionType.startsWith(actGens.nameSpace+":"))
         return state;
 
-      //console.log(`Calling reduceFunc ${action.get('type')}`);
-      return reduceFunc({state,action,initState,reducer});
-    };
+      //console.log(`Calling reduceFunc ${action['type']}`);
+
+      // return actGens.reduceFunc && actGens.reduceFunc({state,action,reducer})
+      //         ||  genTypeReduceFunc(
+      //
+      //         Object.values(actGens).reduce(
+      //           (acc,gen)=>((gen && gen.gen && gen.reduceFunc)? Object.assign(acc,{ [gen.subType]:gen.reduceFunc }):acc),
+      //           {})
+      //
+      //   )({state,action,reducer});
+
+      return typeReduceFunc({state,action,reducer});
+
+      //return reduceFunc({state,action,initState,reducer});
+    }, actGens.initState);
 
     reducer.actGens = actGens;
     reducer.nameSpace = actGens.nameSpace;
-    reducer.initState = initState;
+    reducer.initState = actGens.initState;
 
 
     return reducer;
@@ -45,11 +54,15 @@ export default ({actGens,initState,reduceFunc})=> {
 
 
 export const genReduceMap = (actGens,funcMap) =>{
+  // console.log(`genReduceMap Run ${actGens.nameSpace}`);
+  // console.log(actGens);
+  // console.log(funcMap);
 
   return Object.keys(funcMap).reduce((acc,key)=>{
                       switch(typeof funcMap[key]){
                         case 'function' :
-                          return acc.set(actGens.get(key).type,funcMap[key]);
+                          acc[actGens[key].type]=funcMap[key];
+                          return acc;
 
                         case 'string':
                           if(funcMap[key].startsWith('set')) {
@@ -57,36 +70,36 @@ export const genReduceMap = (actGens,funcMap) =>{
                             const valueKey = funcMap[key].split(' ')[1] || key.slice(3,4).toLowerCase()+key.slice(4);
                             //console.log(`valueKey=${valueKey}`);
 
-                            return acc.set(actGens.get(key).type,
-                                ({state,action})=>newState(state,
-                                  {[valueKey]:action[valueKey]}));
+                            acc[actGens[key].type]=
+                                ({state,action})=>{state[valueKey]=action[valueKey]}; // Immer way
 
-                          } else
-                            return acc;
+                          }
+                          return acc;
 
                         default:
                           return acc;
                       }
 
-                    },Map({}));
+                    },{});
 };
 
 
-export const genReduceFunc = (funcMap) =>{
-  //console.log(funcMap);
-  return ({state,action,initState,reducer}) => {
-
+export const genTypeReduceFunc = (funcMap) =>{
+  console.log(`Inside getTypeReduceFunc:${funcMap}`);
+  return ({state,action,reducer}) => {
+    //console.log(`inside ReduceFunc:${reducer.actGens.nameSpace}`);
     if(!reducer.actionMap) {
-      //console.log('reduceFuncMap created:'+reducer.nameSpace);
+
       reducer.actionMap = genReduceMap(reducer.actGens,funcMap);
+      //console.log(reducer.actionMap);
     }
 
 
-    const reduceFunc = reducer.actionMap.get(action.type);
+    const reduceFunc = reducer.actionMap[action.type];
 
-    //console.log(`reduceFunc:${action.get('type')} ${reduceFunc}`);
+    //console.log(`reduceFunc:${action['type']} ${reduceFunc}`);
 
-    return (reduceFunc)? reduceFunc({state,action}) || state: state;
+    return (reduceFunc)? reduceFunc({state,action,reducer}) || state: state;
 
   };
 };

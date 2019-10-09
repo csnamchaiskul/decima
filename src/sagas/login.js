@@ -23,7 +23,7 @@ function* getToken(action){
     const jwt = jwtDecode(response.result.accessToken);
     console.log(jwt);
 
-    yield put(loginActionGens.get('setLogin').gen({
+    yield put(loginActionGens['setLogin'].gen({
 
       accessToken: response.result.accessToken,
       accessTokenExpired: jwt.exp-300,
@@ -34,7 +34,7 @@ function* getToken(action){
       //clientAccessTokenExpired: plusSecondToNow(result.expiresIn-300)
       }));
 
-    yield put(localStoreActionGens.get('setEmail').gen({email:action.email}));
+    yield put(localStoreActionGens['setEmail'].gen({email:action.email}));
 
     yield put({type:'PATH:Router'});
 

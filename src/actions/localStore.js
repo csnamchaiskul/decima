@@ -1,7 +1,5 @@
 import {ActionGenerators} from '../boilerplate/action';
 
-import {newState} from '../boilerplate/reducer';
-
 
 const actGens =  ActionGenerators({
 

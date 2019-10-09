@@ -21,7 +21,7 @@ function* getCrmUserList(action){
             }
     );
 
-    yield put(adminActionGens.get('setCrmUserList').gen({
+    yield put(adminActionGens['setCrmUserList'].gen({
 
       crmUserList: response.result
 
@@ -67,7 +67,7 @@ function* addCrmUser(action) {
 
   }
 
-  yield put(adminActionGens.get('getCrmUserList').gen());
+  yield put(adminActionGens['getCrmUserList'].gen());
 }
 
 function* deleteCrmUser(action) {
@@ -96,7 +96,7 @@ function* deleteCrmUser(action) {
 
   }
 
-  yield put(adminActionGens.get('getCrmUserList').gen());
+  yield put(adminActionGens['getCrmUserList'].gen());
 }
 
 
@@ -127,7 +127,7 @@ function* changePassword(action) {
 
   }
 
-  yield put(adminActionGens.get('getCrmUserList').gen());
+  yield put(adminActionGens['getCrmUserList'].gen());
 }
 
 

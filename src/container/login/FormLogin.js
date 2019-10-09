@@ -22,7 +22,7 @@ function FormLogin(props) {
     e.preventDefault();
     validateFields((err, values) => {
       if (!err) {
-        dispatch(loginActionGens.get("getToken").gen(values));
+        dispatch(loginActionGens["getToken"].gen(values));
         //console.log('Received values of form: ', values);
       }
     });

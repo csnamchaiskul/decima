@@ -1,5 +1,4 @@
 import { ActionGenerators} from '../boilerplate/action';
-import { newState} from '../boilerplate/reducer';
 
 
 
@@ -15,7 +14,7 @@ const actGens=  ActionGenerators({
     setLogin:
       {
 
-        reduceFunc: ({state,action})=>newState(state,{
+        reduceFunc: ({state,action})=>Object.assign(state,{
           accessToken:action.accessToken,
           accessTokenExpired: action.accessTokenExpired,
           userId: action.userId,
@@ -23,12 +22,7 @@ const actGens=  ActionGenerators({
         })
       },
     initLogin:
-      { reduceFunc: ({state,action})=>newState(state,{
-          userId: null,
-          accessToken: null,
-          accessTokenExpired: null,
-          authorities:[]
-        })},
+      { reduceFunc: ({reducer})=>reducer.initState},
 
 
     },

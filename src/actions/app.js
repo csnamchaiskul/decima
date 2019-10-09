@@ -1,7 +1,5 @@
 import {ActionGenerators} from '../boilerplate/action';
 
-import {newState} from '../boilerplate/reducer';
-
 
 const actGens =  ActionGenerators({
 
@@ -20,24 +18,25 @@ const actGens =  ActionGenerators({
     disable: {
 
       reduceFunc:
-        ({state, action}) => newState(state,
+        ({state, action}) => Object.assign(state,
           {disabled: true, disableMessage: action.disableMessage}),
     }
     ,
     enable: {
 
       reduceFunc:
-        ({state}) => state.set('disabled', false),
+        ({state}) => {state.disabled=false}
     }
     ,
     reset: {
 
       reduceFunc:
-        ({initState}) => initState,
+        ({reducer}) => reducer.initState,
     },
     doLoading: { reduceFunc:
-                  ({state,action})=> newState(state,{ loading: true ,
-                                                      loadingMessage: action.loadingMessage})},
+                  ({state,action})=> {  state.loading= true;
+                                        state.loadingMessage =action.loadingMessage;}
+              },
     setLoading: { reduceFunc: 'set' },
     setLoadingMessage: { reduceFunc: 'set'},
   }

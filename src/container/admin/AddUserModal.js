@@ -1,9 +1,10 @@
 import React,{ useState } from 'react';
+import produce from 'immer';
 import {Button, Icon, Modal} from 'antd';
 import {useDispatch, useSelector} from "react-redux";
 import adminActGen from "../../actions/admin";
 import FormAddUser from "./FormAddUser";
-import { newState} from '../../boilerplate/reducer';
+import { newObject } from "../../boilerplate/util"
 
 
 export default function AddUserModal(props) {
@@ -23,13 +24,13 @@ export default function AddUserModal(props) {
   const state = useSelector(s=>s.admin.addUserModal);
 
   const setState = (s) => {
-    dispatch(adminActGen.get("setAddUserModal").gen({addUserModal:newState(state,s)}));
+    dispatch(adminActGen["setAddUserModal"].gen({addUserModal:newObject(state,s)}));
   };
 
 
   const onAddUserOk = (e)=>{
     setState({confirmLoading:true});
-    dispatch(adminActGen.get("addCrmUser").gen({
+    dispatch(adminActGen["addCrmUser"].gen({
       email: formRef.props.form.getFieldValue('email'),
       password: formRef.props.form.getFieldValue('password'),
     }));
