@@ -9,7 +9,7 @@ export default ({actGens})=> {
 
     //console.log(actGens);
 
-    let typeReduceFunc= actGens.reduceFunc || genTypeReduceFunc(
+    let typeReduceFunc= typeof actGens.reduceFunc === 'function'? actGens.reduceFunc : genTypeReduceFunc(
         Object.values(actGens).reduce(
           (acc,gen)=>((gen && gen.gen && gen.reduceFunc)? Object.assign(acc,{ [gen.subType]:gen.reduceFunc }):acc),
           {})

@@ -3,11 +3,10 @@ import {Button, Modal, Icon} from 'antd';
 import {connect} from "react-redux";
 import adminActGen from "../../actions/admin";
 import FormChangePassword from "./FormChangePassword";
-import { newState} from '../../boilerplate/reducer';
 
 
 class ChangePasswordModal extends React.Component {
-  state = { visible: false, confirmLoading: false, aha: 12};
+  state = { visible: false, confirmLoading: false};
 
   formRef=null;
 
@@ -37,7 +36,7 @@ class ChangePasswordModal extends React.Component {
 
     return (<span><Button ghost size={'small'} type="primary" onClick={(e)=>{
 
-              this.setState({visible:true,aha:14});
+              this.setState({visible:true});
               console.log(this.state);
 
       }} ><Icon type={'key'}/></Button>
