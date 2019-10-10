@@ -10,7 +10,7 @@ export const ActionGenerators = ({nameSpace,actions,initState,reduceFunc})=>{
   const actGens = Object.keys(actions)
       .map((k)=>Object.assign(actions[k],{subType:k}))
       .reduce(
-        (actionMap,{subType,paramsFunc,reduceFunc})=>
+        (actionMap,{subType,paramsFunc,reduceFunc,sagaFunc})=>
                 Object.assign(actionMap,{[subType]:{
 
           set nameSpace(ns) {},
@@ -23,7 +23,10 @@ export const ActionGenerators = ({nameSpace,actions,initState,reduceFunc})=>{
           get subType(){ return subType},
 
           set reduceFunc(rf) {},
-          get reduceFunc() { return reduceFunc },
+          get reduceFunc() { return convertReduceFunc(subType,reduceFunc) },
+
+          set sagaFunc(sf) {},
+          get sagaFunc() { return sagaFunc },
 
           gen:function(params){
 
@@ -40,48 +43,43 @@ export const ActionGenerators = ({nameSpace,actions,initState,reduceFunc})=>{
         }}), {});
 
   //console.log(actGens);
+
+
+  actGens.reduceFuncMap = Object.values(actGens)
+      .reduce(
+        (acc,gen)=>((gen && gen.gen && gen.reduceFunc)?
+          Object.assign(acc,{ [gen.type] :
+            gen.reduceFunc }):acc),
+        {}
+      );
+
+  actGens.sagaFuncMap = Object.values(actGens)
+    .reduce(
+      (acc,gen)=>((gen && gen.gen && gen.sagaFunc)?
+        Object.assign(acc,{ [gen.type] :
+          gen.sagaFunc }):acc),
+      {}
+    );
+
+  console.log(actGens.sagaFuncMap);
+
   actGens.nameSpace = nameSpace;
   actGens.initState = initState;
   actGens.selector = (state) =>(state[nameSpace]);
-
-  actGens.reduceFuncMap = convertReduceFuncMap(
-    actGens,
-    Object.values(actGens)
-      .reduce(
-        (acc,gen)=>((gen && gen.gen && gen.reduceFunc)?
-            Object.assign(acc,{ [gen.subType] :
-            gen.reduceFunc }):acc),
-        {}
-      )
-  );
-
-  actGens.reduceFunc = typeof reduceFunc === 'function'?
-
-    reduceFunc :
-
-    ({state, action}) => {
-
-      const reduceFunc = typeof action.reduceFunc === 'function' ?
-        action.reduceFunc : actGens.reduceFuncMap[action.type];
-
-      return (reduceFunc) ? reduceFunc({state, action, actGens}) || state : state;
-
-    };
-
-
   actGens.reducer = produce((state, action) => {
 
     //console.log(`action=${action.type} immutable=${isImmutable(action)}`)
 
-    const actionType = action.type;
 
-    if ((actionType === undefined)
-      || !actionType.startsWith(actGens.nameSpace + ":"))
+    if ((action.type === undefined)
+      || !action.type.startsWith(actGens.nameSpace + ":"))
       return state;
 
     //console.log(`Calling reduceFunc ${action['type']}`);
+    const selectedReduceFunc = typeof action.reduceFunc === 'function' ?
+      action.reduceFunc : (typeof reduceFunc === 'function'? reduceFunc: actGens.reduceFuncMap[action.type]);
 
-    return actGens.reduceFunc({state, action});
+    return (selectedReduceFunc)? selectedReduceFunc({state, action, initState}) || state: state ;
 
   }, actGens.initState);
 
@@ -91,31 +89,26 @@ export const ActionGenerators = ({nameSpace,actions,initState,reduceFunc})=>{
 };
 
 
-export const convertReduceFuncMap = (actGens,rawFuncMap) =>{
-  // console.log(`genReduceMap Run ${actGens.nameSpace}`);
-  // console.log(actGens);
-  // console.log(funcMap);
 
-  return Object.keys(rawFuncMap).reduce((acc,key)=>{
-    switch(typeof rawFuncMap[key]){
-      case 'function' :
-        acc[actGens[key].type]=rawFuncMap[key];
-        return acc;
+export const convertReduceFunc = (key,rawFunc) => {
 
-      case 'string':
-        if(rawFuncMap[key].startsWith('set')) {
+  switch(typeof rawFunc){
+    case 'function' :
+      return rawFunc;
 
-          const valueKey = rawFuncMap[key].split(' ')[1] || key.slice(3,4).toLowerCase()+key.slice(4);
-          //console.log(`valueKey=${valueKey}`);
+    case 'string':
+      if(rawFunc.startsWith('set')) {
 
-          acc[actGens[key].type]=
-            ({state,action})=>{state[valueKey]=action[valueKey]}; // Immer way
+        const valueKey = rawFunc.split(' ')[1] || key.slice(3,4).toLowerCase()+key.slice(4);
+        //console.log(`valueKey=${valueKey}`);
 
-        }
-        return acc;
+        return ({state,action})=>{state[valueKey]=action[valueKey]}; // Immer way
 
-      default:
-        return acc;
-    }
-  },{});
-};
+      }
+      return undefined;
+
+    default:
+      return undefined;
+  }
+
+}

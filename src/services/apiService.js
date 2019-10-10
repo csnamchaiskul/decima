@@ -1,16 +1,15 @@
 import axios from 'axios';
 import qs from 'qs';
-import { store } from '../config/configStore'
 
 const genURL = (url) => (window.decimaSetting.nonaUrl+url);
 
 function loading(){
-  store.dispatch({type:'APP:doLoading',loadingMessage:'Loading...'});
+
   return true;
 }
 
 function loaded(){
-  store.dispatch({type:'APP:setLoading',loading:false});
+
   return true;
 }
 

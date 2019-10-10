@@ -31,7 +31,7 @@ const actGens =  ActionGenerators({
     reset: {
 
       reduceFunc:
-        ({actGens}) => actGens.initState,
+        ({initState}) => initState,
     },
     doLoading: { reduceFunc:
                   ({state,action})=> {  state.loading= true;

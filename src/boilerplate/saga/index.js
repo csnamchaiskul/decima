@@ -7,10 +7,17 @@ export const log = (effect, message) => {
   return effect
 };
 
-export const takeEvery = (actionGens,func)=> {
-  return reduxTakeEvery(actionGens[func.name].type,func);
-};
+// export const takeEvery = (actionGens,func)=> {
+//   // console.log(actionGens);
+//   // console.log(func);
+//   return reduxTakeEvery(actionGens[func.name].type,func);
+// };
+//
+// export const genTakeEvery = (actionGens, funcAr)=> {
+//   return funcAr.map((f)=>takeEvery(actionGens,f))
+// };
 
-export const genTakeEvery = (actionGens, funcAr)=> {
-  return funcAr.map((f)=>takeEvery(actionGens,f))
-};
+
+export const doTakeEvery = (sagaFuncMap)=>{
+  return Object.keys(sagaFuncMap).map((key)=>reduxTakeEvery(key,sagaFuncMap[key]))
+}

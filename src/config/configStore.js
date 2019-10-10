@@ -7,17 +7,16 @@ import createSagaMiddleware from 'redux-saga';
 // Redux persist
 import { persistReducer, persistStore} from 'redux-persist';
 
-import {immutableActionMiddleWare} from '../boilerplate';
-
 // Redux form
 // import { reducer as formReducer} from 'redux-form';
 
-import {rootPersistConfig,localStorePersistConfig} from './configPersist';
+import {rootPersistConfig} from './configPersist';
 import { connectRoute } from './configRoute';
 
-import sagas from '../sagas';
+
 import reducers from '../reducers';
 import localStoreActGen from '../actions/localStore';
+import sagas from '../sagas';
 
 
 const localStoreReducer = localStoreActGen.reducer;
@@ -37,8 +36,6 @@ export default (preloadedState) => {
   const persistedReducer = persistReducer(rootPersistConfig, combineReducers(
     {
       ...reducers,
-      localStorage: persistReducer(localStorePersistConfig, localStoreReducer),
-    //form: formReducer,
     location:routerReducer}));
 
 
@@ -46,7 +43,7 @@ export default (preloadedState) => {
     persistedReducer,
     preloadedState,
     composeWithDevTools(
-      applyMiddleware(immutableActionMiddleWare,routerMiddleware,sagaMiddleware),
+      applyMiddleware(routerMiddleware,sagaMiddleware),
       routerEnhancer)
   );
 
