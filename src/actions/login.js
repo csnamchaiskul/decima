@@ -22,7 +22,7 @@ const actGens=  ActionGenerators({
         })
       },
     initLogin:
-      { reduceFunc: ({reducer})=>reducer.initState},
+      { reduceFunc: ({actGens})=>actGens.initState},
 
 
     },

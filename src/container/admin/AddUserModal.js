@@ -15,9 +15,9 @@ export default function AddUserModal(props) {
   const onAddUserButtonClick = (e)=>{
     dispatch({
       type:'ADMIN:setAddUserModal',
-      addUserModal:{
-        visible:true,
-        confirmLoading: false
+      reduceFunc:({state,action,reducer})=>{
+        state.addUserModal.visible = true;
+        state.addUserModal.confirmLoading = false;
       }})
   };
 

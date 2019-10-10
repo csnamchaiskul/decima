@@ -38,7 +38,7 @@ const actGens=  ActionGenerators({
       },
 
     init:
-      { reduceFunc: ({reducer})=>reducer.initState},
+      { reduceFunc: ({actGens})=>actGens.initState},
 
 
     },
