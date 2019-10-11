@@ -1,18 +1,18 @@
-import ActionGenerator from '../ActionGenerator';
+import {createActions} from '../sagadux';
 import {apiCall} from "../sagas";
 import {getApi, postApi} from "../services/apiService";
 import {put, select} from "redux-saga/effects";
 import {message} from "antd";
 
 
-const actGens=  ActionGenerator({
+const adminActions=  createActions({
 
   nameSpace: 'ADMIN',
 
   actions:{
     getCrmUserList: {
 
-      sagaFunc: function* getCrmUserList(action){
+      sagaFn: function* getCrmUserList(action){
 
         //console.log(action);
 
@@ -25,7 +25,7 @@ const actGens=  ActionGenerator({
             }
           );
 
-          yield put(actGens.setCrmUserList({
+          yield put(adminActions.setCrmUserList({
 
             crmUserList: response.result
 
@@ -48,7 +48,7 @@ const actGens=  ActionGenerator({
     },
 
     addCrmUser:{
-      sagaFunc: function* addCrmUser(action) {
+      sagaFn: function* addCrmUser(action) {
         try {
           const response = yield* apiCall(postApi,
             {
@@ -74,12 +74,12 @@ const actGens=  ActionGenerator({
 
         }
 
-        yield put(actGens.getCrmUserList());
+        yield put(adminActions.getCrmUserList());
       }
 
     },
     deleteCrmUser:{
-      sagaFunc: function* deleteCrmUser(action) {
+      sagaFn: function* deleteCrmUser(action) {
         try {
           // const response = yield call(postApi,
           //   {
@@ -105,7 +105,7 @@ const actGens=  ActionGenerator({
 
         }
 
-        yield put(actGens.getCrmUserList());
+        yield put(adminActions.getCrmUserList());
       }
 
     },
@@ -116,7 +116,7 @@ const actGens=  ActionGenerator({
 
     },
     changePassword: {
-      sagaFunc: function* changePassword(action) {
+      sagaFn: function* changePassword(action) {
         try {
           const response = yield* apiCall(postApi,
             {
@@ -143,17 +143,17 @@ const actGens=  ActionGenerator({
 
         }
 
-        yield put(actGens.getCrmUserList());
+        yield put(adminActions.getCrmUserList());
       }
 
     },
     setAddUserModal:{
-      reduceFunc: 'set'
+      reduceFn: 'set'
     },
     setCrmUserList:
       {
 
-        reduceFunc: ({state,action})=>Object.assign(state,{
+        reduceFn: ({state,action})=>Object.assign(state,{
           crmUserListLastUpdate: new Date().getTime(),
           crmUserList: action.crmUserList,
           addUserModal: { visible: false, confirmLoading: false}
@@ -161,7 +161,7 @@ const actGens=  ActionGenerator({
       },
 
     init:
-      { reduceFunc: ({initState})=>initState},
+      { reduceFn: ({initState})=>initState},
 
 
     },
@@ -176,4 +176,4 @@ const actGens=  ActionGenerator({
   }
 });
 
-export default actGens;
+export default adminActions;

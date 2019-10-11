@@ -1,7 +1,7 @@
-import ActionGenerator from '../ActionGenerator';
+import {createActions} from '../sagadux';
 
 
-const actGens =  ActionGenerator({
+const localStoreActions =  createActions({
 
   nameSpace: "LOCALSTORE",
 
@@ -12,9 +12,9 @@ const actGens =  ActionGenerator({
 
   actions: {
 
-    setEmail: { reduceFunc: 'set' }
+    setEmail: { reduceFn: 'set' }
   }
 });
 
-export default actGens;
+export default localStoreActions;
 

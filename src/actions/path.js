@@ -1,7 +1,7 @@
-import ActionGenerator from '../ActionGenerator';
+import {createActions} from '../sagadux';
 
 
-const actGens =  ActionGenerator({
+const pathActions =  createActions({
 
   nameSpace: "PATH",
 
@@ -10,7 +10,7 @@ const actGens =  ActionGenerator({
   actions: {
 
     doLogin: {
-      sagaFunc: function* doLogin(action){
+      sagaFn: function* doLogin(action){
 
         console.log("Before PATH:Login");
 
@@ -21,5 +21,5 @@ const actGens =  ActionGenerator({
 
 });
 
-export default actGens;
+export default pathActions;
 

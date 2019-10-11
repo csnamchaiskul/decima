@@ -1,20 +1,20 @@
-import ActionGenerator from '../ActionGenerator';
+import {createActions} from '../sagadux';
 import {apiCall} from "../sagas";
 import {postApi} from "../services/apiService";
 import jwtDecode from "jwt-decode";
 import {put} from "redux-saga/effects";
-import localStoreActionGens from "./localStore";
+import localStoreActions from "./localStore";
 import {message} from "antd";
 
 
-const actGens=  ActionGenerator({
+const loginActions=  createActions({
 
   nameSpace: 'LOGIN',
 
   actions:{
     getToken: {
 
-      sagaFunc: function* getToken(action){
+      sagaFn: function* getToken(action){
 
         //console.log(action);
 
@@ -29,7 +29,7 @@ const actGens=  ActionGenerator({
           const jwt = jwtDecode(response.result.accessToken);
           console.log(jwt);
 
-          yield put(actGens.setLogin({
+          yield put(loginActions.setLogin({
 
             accessToken: response.result.accessToken,
             accessTokenExpired: jwt.exp-300,
@@ -39,7 +39,7 @@ const actGens=  ActionGenerator({
 
           }));
 
-          yield put(localStoreActionGens.setEmail({email:action.email}));
+          yield put(localStoreActions.setEmail({email:action.email}));
 
           yield put({type:'PATH:Router'});
 
@@ -57,7 +57,7 @@ const actGens=  ActionGenerator({
     setLogin:
       {
 
-        reduceFunc: ({state,action})=>Object.assign(state,{
+        reduceFn: ({state,action})=>Object.assign(state,{
           accessToken:action.accessToken,
           accessTokenExpired: action.accessTokenExpired,
           userId: action.userId,
@@ -67,7 +67,7 @@ const actGens=  ActionGenerator({
       },
     initLogin:
       {
-        reduceFunc: ({initState})=>initState,
+        reduceFn: ({initState})=>initState,
 
 
       },
@@ -83,4 +83,4 @@ const actGens=  ActionGenerator({
   }
 });
 
-export default actGens;
+export default loginActions;

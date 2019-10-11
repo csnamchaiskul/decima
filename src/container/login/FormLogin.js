@@ -1,8 +1,7 @@
 import React from 'react';
 import { Form,Icon,Input, Button, message} from 'antd';
 import { useSelector,useDispatch } from 'react-redux';
-import appActionGens from '../../actions/app';
-import loginActionGens from '../../actions/login';
+import loginActions from '../../actions/login';
 
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -22,7 +21,7 @@ function FormLogin(props) {
     e.preventDefault();
     validateFields((err, values) => {
       if (!err) {
-        dispatch(loginActionGens.getToken(values));
+        dispatch(loginActions.getToken(values));
         //console.log('Received values of form: ', values);
       }
     });

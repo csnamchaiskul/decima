@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Modal, Icon} from 'antd';
 import {connect} from "react-redux";
-import adminActGen from "../../actions/admin";
+import adminActions from "../../actions/admin";
 import FormChangePassword from "./FormChangePassword";
 
 
@@ -12,7 +12,7 @@ class ChangePasswordModal extends React.Component {
 
   handleOk = (e)=>{
     this.setState({confirmLoading:true});
-    this.props.dispatch(adminActGen.changePassword({
+    this.props.dispatch(adminActions.changePassword({
       id: this.props.userId,
       password: this.formRef.props.form.getFieldValue('password'),
     }));

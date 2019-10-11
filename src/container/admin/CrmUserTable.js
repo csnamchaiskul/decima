@@ -1,7 +1,8 @@
 import React,{ useEffect,useState } from 'react';
 import Link from "redux-first-router-link";
 import { Icon,Row,Col, Button, Popconfirm, Checkbox} from "antd";
-import adminActGen from '../../actions/admin';
+import adminActions from '../../actions/admin';
+import loginActions from "../../actions/login";
 
 import {useSelector,useDispatch} from "react-redux";
 
@@ -23,7 +24,7 @@ function clickable(child,rowUserId){
 export default function CrmUserTable(){
 
   const dispatch=useDispatch();
-  const actorId=useSelector((state)=>(state.login.userId));
+  const actorId=useSelector(adminActions.selector("userId"));
 
 
 
@@ -39,7 +40,7 @@ export default function CrmUserTable(){
     render:(role,record) => {
 
       return <Button
-        onClick={()=>{dispatch(adminActGen.toggleAdminCrmUser())}}
+        onClick={()=>{dispatch(adminActions.toggleAdminCrmUser())}}
         type={'link'}>{checked(!!role.find((r)=>r==='ROLE_CRMADMIN'))}</Button>;
     }
   },{
@@ -49,7 +50,7 @@ export default function CrmUserTable(){
     render:(locked,record) => {
 
       return <Button
-        onClick={()=>{dispatch(adminActGen.toggleLockCrmUser())}}
+        onClick={()=>{dispatch(adminActions.toggleLockCrmUser())}}
         type={'link'}>{(locked? <Icon type={'lock'}/> : <Icon type={'unlock'}/>)}</Button> ;
     }
   },{
@@ -58,7 +59,7 @@ export default function CrmUserTable(){
     render:(data,record)=>(<Button.Group>
       {(actorId!==record.id) && (<Popconfirm title={"Are you sure delete this task?"}
                 onConfirm={()=>{
-                  dispatch(adminActGen.deleteCrmUser({userId:record.id}));
+                  dispatch(adminActions.deleteCrmUser({userId:record.id}));
                 }}
 
     >
@@ -83,10 +84,8 @@ export default function CrmUserTable(){
 
 
 
-  const dataSource = useSelector((state)=>state.admin.crmUserList);
-  const crmUserListLastUpdate = useSelector((state)=>state.admin.crmUserListLastUpdate);
-
-  const userId = useSelector((s)=>s.login.userId);
+  const dataSource = useSelector(adminActions.selector("crmUserList"));
+  const crmUserListLastUpdate = useSelector(adminActions.selector("crmUserListLastUpdate"));
 
   useEffect(()=>{
     //console.log("Effect run!!");

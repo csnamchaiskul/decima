@@ -1,10 +1,9 @@
 import React,{ useState } from 'react';
-import produce from 'immer';
 import {Button, Icon, Modal} from 'antd';
 import {useDispatch, useSelector} from "react-redux";
-import adminActGen from "../../actions/admin";
+import adminActions from "../../actions/admin";
 import FormAddUser from "./FormAddUser";
-import { newObject } from "../../ActionGenerator"
+import { newObject } from "../../sagadux"
 
 
 export default function AddUserModal(props) {
@@ -13,24 +12,24 @@ export default function AddUserModal(props) {
   let formRef;
 
   const onAddUserButtonClick = (e)=>{
-    dispatch({
-      type:'ADMIN:setAddUserModal',
-      reduceFunc:({state,action,reducer})=>{
+    dispatch(adminActions.setAddUserModal({
+      reduceFn:({state,action})=>{
         state.addUserModal.visible = true;
         state.addUserModal.confirmLoading = false;
-      }})
+      }}));
   };
 
-  const state = useSelector(s=>s.admin.addUserModal);
+  const state = useSelector(adminActions.selector(s=>s.addUserModal));
+  console.log(state);
 
   const setState = (s) => {
-    dispatch(adminActGen.setAddUserModal({addUserModal:newObject(state,s)}));
+    dispatch(adminActions.setAddUserModal({addUserModal:newObject(state,s)}));
   };
 
 
   const onAddUserOk = (e)=>{
     setState({confirmLoading:true});
-    dispatch(adminActGen.addCrmUser({
+    dispatch(adminActions.addCrmUser({
       email: formRef.props.form.getFieldValue('email'),
       password: formRef.props.form.getFieldValue('password'),
     }));

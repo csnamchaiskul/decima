@@ -1,7 +1,7 @@
-import ActionGenerator from '../ActionGenerator';
+import {createActions} from '../sagadux';
 
 
-const actGens =  ActionGenerator({
+const appActions =  createActions({
 
   nameSpace: "APP",
 
@@ -17,30 +17,30 @@ const actGens =  ActionGenerator({
     initApp: {},
     disable: {
 
-      reduceFunc:
+      reduceFn:
         ({state, action}) => Object.assign(state,
           {disabled: true, disableMessage: action.disableMessage}),
     }
     ,
     enable: {
 
-      reduceFunc:
+      reduceFn:
         ({state}) => {state.disabled=false}
     }
     ,
     reset: {
 
-      reduceFunc:
+      reduceFn:
         ({initState}) => initState,
     },
-    doLoading: { reduceFunc:
+    doLoading: { reduceFn:
                   ({state,action})=> {  state.loading= true;
                                         state.loadingMessage =action.loadingMessage;}
               },
-    setLoading: { reduceFunc: 'set' },
-    setLoadingMessage: { reduceFunc: 'set'},
+    setLoading: { reduceFn: 'set' },
+    setLoadingMessage: { reduceFn: 'set'},
   }
 });
 
-export default actGens;
+export default appActions;
 

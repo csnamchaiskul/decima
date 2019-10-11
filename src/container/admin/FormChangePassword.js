@@ -2,7 +2,7 @@ import React from 'react';
 import { Form,Icon,Input, Button, message} from 'antd';
 import { useSelector,useDispatch,connect } from 'react-redux';
 
-import adminActionGens from '../../actions/admin';
+import adminActions from '../../actions/admin';
 
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);

@@ -2,7 +2,7 @@ import React from 'react';
 import { Form,Icon,Input, Button, message} from 'antd';
 import { useSelector,useDispatch,connect } from 'react-redux';
 
-import adminActionGens from '../../actions/admin';
+import adminActions from '../../actions/admin';
 
 function hasErrors(fieldsError) {
   return Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -21,14 +21,7 @@ class FormAddUser extends React.Component {
     const passwordError = isFieldTouched('password') && getFieldError('password');
 
     const handleSubmit = e => {
-      // Use Modal to submit
-      // e.preventDefault();
-      // validateFields((err, values) => {
-      //   if (!err) {
-      //     this.props.dispatch(adminActionGens.get("addCrmUser").gen(values));
-      //     //console.log('Received values of form: ', values);
-      //   }
-      // });
+
     };
 
     function hasErrors(fieldsError) {
