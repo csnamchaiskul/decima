@@ -39,7 +39,7 @@ export default function CrmUserTable(){
     render:(role,record) => {
 
       return <Button
-        onClick={()=>{dispatch(adminActGen.get("toggleAdminCrmUser").gen())}}
+        onClick={()=>{dispatch(adminActGen.toggleAdminCrmUser())}}
         type={'link'}>{checked(!!role.find((r)=>r==='ROLE_CRMADMIN'))}</Button>;
     }
   },{
@@ -49,7 +49,7 @@ export default function CrmUserTable(){
     render:(locked,record) => {
 
       return <Button
-        onClick={()=>{dispatch(adminActGen.get("toggleLockCrmUser").gen())}}
+        onClick={()=>{dispatch(adminActGen.toggleLockCrmUser())}}
         type={'link'}>{(locked? <Icon type={'lock'}/> : <Icon type={'unlock'}/>)}</Button> ;
     }
   },{
@@ -58,7 +58,7 @@ export default function CrmUserTable(){
     render:(data,record)=>(<Button.Group>
       {(actorId!==record.id) && (<Popconfirm title={"Are you sure delete this task?"}
                 onConfirm={()=>{
-                  dispatch(adminActGen.get("deleteCrmUser").gen({userId:record.id}));
+                  dispatch(adminActGen.deleteCrmUser({userId:record.id}));
                 }}
 
     >

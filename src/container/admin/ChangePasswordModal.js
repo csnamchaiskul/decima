@@ -12,7 +12,7 @@ class ChangePasswordModal extends React.Component {
 
   handleOk = (e)=>{
     this.setState({confirmLoading:true});
-    this.props.dispatch(adminActGen.get("changePassword").gen({
+    this.props.dispatch(adminActGen.changePassword({
       id: this.props.userId,
       password: this.formRef.props.form.getFieldValue('password'),
     }));

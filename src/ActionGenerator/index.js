@@ -1,9 +1,12 @@
 import produce from "immer";
+import { takeEvery as reduxTakeEvery } from 'redux-saga/effects';
+
+
 export const prefix = reducers => Object.values(reducers).map((o)=>o.nameSpace);
 
 export const getNameSpace =  (nameSpace) => ((nameSpace) ? nameSpace.replace('actions.','').toUpperCase() : nameSpace);
 
-export const ActionGenerators = ({nameSpace,actions,initState,reduceFunc})=>{
+export default ({nameSpace,actions,initState,reduceFunc})=>{
 
   console.log("Create action generator: "+ nameSpace);
 
@@ -11,43 +14,38 @@ export const ActionGenerators = ({nameSpace,actions,initState,reduceFunc})=>{
       .map((k)=>Object.assign(actions[k],{subType:k}))
       .reduce(
         (actionMap,{subType,paramsFunc,reduceFunc,sagaFunc})=>
-                Object.assign(actionMap,{[subType]:{
+          Object.assign(actionMap,
+            { [subType]: (()=>{
 
-          set nameSpace(ns) {},
-          get nameSpace(){ return nameSpace},
+              const gen = (params) => {
 
-          set type(t) {},
-          get type(){ return nameSpace + ':' + subType},
+                const action = {
+                  type: gen.type,
+                  subType: gen.subType
+                };
 
-          set subType(t) {},
-          get subType(){ return subType},
+                //console.log(`this=${this.type}`);
+                return (paramsFunc)? paramsFunc({action, params}):
+                  (typeof params === 'object')? Object.assign(action,params):
+                    action;
+              };
 
-          set reduceFunc(rf) {},
-          get reduceFunc() { return convertReduceFunc(subType,reduceFunc) },
-
-          set sagaFunc(sf) {},
-          get sagaFunc() { return sagaFunc },
-
-          gen:function(params){
-
-            const action = {
-              type: this.type,
-              subType: this.subType
-            };
-
-            //console.log(`this=${this.type}`);
-            return (paramsFunc)? paramsFunc({action, params}):
-                (typeof params === 'object')? Object.assign(action,params):
-                                              action;
+              gen.nameSpace= nameSpace;
+              gen.type = nameSpace+':'+subType;
+              gen.reduceFunc = convertReduceFunc(subType,reduceFunc);
+              gen.sagaFunc = sagaFunc;
+              return gen;
+            })()
           }
-        }}), {});
+        ),
+      {});
 
   //console.log(actGens);
 
 
   actGens.reduceFuncMap = Object.values(actGens)
       .reduce(
-        (acc,gen)=>((gen && gen.gen && gen.reduceFunc)?
+        (acc,gen)=>((gen && typeof gen.reduceFunc==='function')?
           Object.assign(acc,{ [gen.type] :
             gen.reduceFunc }):acc),
         {}
@@ -55,13 +53,13 @@ export const ActionGenerators = ({nameSpace,actions,initState,reduceFunc})=>{
 
   actGens.sagaFuncMap = Object.values(actGens)
     .reduce(
-      (acc,gen)=>((gen && gen.gen && gen.sagaFunc)?
+      (acc,gen)=>((gen && typeof gen.sagaFunc==='function')?
         Object.assign(acc,{ [gen.type] :
           gen.sagaFunc }):acc),
       {}
     );
 
-  console.log(actGens.sagaFuncMap);
+  //console.log(actGens.sagaFuncMap);
 
   actGens.nameSpace = nameSpace;
   actGens.initState = initState;
@@ -83,14 +81,14 @@ export const ActionGenerators = ({nameSpace,actions,initState,reduceFunc})=>{
 
   }, actGens.initState);
 
-
+  //console.log(actGens);
   return actGens;
 
 };
 
 
 
-export const convertReduceFunc = (key,rawFunc) => {
+const convertReduceFunc = (key,rawFunc) => {
 
   switch(typeof rawFunc){
     case 'function' :
@@ -111,4 +109,28 @@ export const convertReduceFunc = (key,rawFunc) => {
       return undefined;
   }
 
-}
+};
+
+export const plusSecondToNow= (second) => (new Date()).getTime()+(second)*1000;
+
+export const newObject = produce((draft,...src)=>Object.assign(draft,...src));
+
+export const log = (effect, message) => {
+  console.log(message);
+  return effect
+};
+
+// export const takeEvery = (actionGens,func)=> {
+//   // console.log(actionGens);
+//   // console.log(func);
+//   return reduxTakeEvery(actionGens[func.name].type,func);
+// };
+//
+// export const genTakeEvery = (actionGens, funcAr)=> {
+//   return funcAr.map((f)=>takeEvery(actionGens,f))
+// };
+
+
+export const doTakeEvery = (sagaFuncMap)=>{
+  return Object.keys(sagaFuncMap).map((key)=>reduxTakeEvery(key,sagaFuncMap[key]))
+};

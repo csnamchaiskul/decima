@@ -5,7 +5,7 @@ import loginActGens from '../actions/login';
 import adminActGens from '../actions/admin';
 import pathActGens from '../actions/path';
 import appActGens from '../actions/app';
-import {doTakeEvery} from "../boilerplate/saga";
+import {doTakeEvery} from "../ActionGenerator";
 
 
 
@@ -22,9 +22,9 @@ export default function* rootSaga() {
 
 
 export function* apiCall(method,args){
-  yield put (appActGens.doLoading.gen({loadingMessage:'Loading...'}));
+  yield put (appActGens.doLoading({loadingMessage:'Loading...'}));
   const response = yield call(method,args);
-  yield put (appActGens.setLoading.gen({loading:false}));
+  yield put (appActGens.setLoading({loading:false}));
   return response;
 }
 

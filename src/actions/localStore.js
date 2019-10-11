@@ -1,7 +1,7 @@
-import {ActionGenerators} from '../boilerplate/action';
+import ActionGenerator from '../ActionGenerator';
 
 
-const actGens =  ActionGenerators({
+const actGens =  ActionGenerator({
 
   nameSpace: "LOCALSTORE",
 

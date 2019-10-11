@@ -1,4 +1,4 @@
-import { ActionGenerators} from '../boilerplate/action';
+import ActionGenerator from '../ActionGenerator';
 import {apiCall} from "../sagas";
 import {postApi} from "../services/apiService";
 import jwtDecode from "jwt-decode";
@@ -7,7 +7,7 @@ import localStoreActionGens from "./localStore";
 import {message} from "antd";
 
 
-const actGens=  ActionGenerators({
+const actGens=  ActionGenerator({
 
   nameSpace: 'LOGIN',
 
@@ -29,7 +29,7 @@ const actGens=  ActionGenerators({
           const jwt = jwtDecode(response.result.accessToken);
           console.log(jwt);
 
-          yield put(actGens['setLogin'].gen({
+          yield put(actGens.setLogin({
 
             accessToken: response.result.accessToken,
             accessTokenExpired: jwt.exp-300,
@@ -39,7 +39,7 @@ const actGens=  ActionGenerators({
 
           }));
 
-          yield put(localStoreActionGens['setEmail'].gen({email:action.email}));
+          yield put(localStoreActionGens.setEmail({email:action.email}));
 
           yield put({type:'PATH:Router'});
 

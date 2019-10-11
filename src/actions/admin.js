@@ -1,11 +1,11 @@
-import { ActionGenerators} from '../boilerplate/action';
+import ActionGenerator from '../ActionGenerator';
 import {apiCall} from "../sagas";
 import {getApi, postApi} from "../services/apiService";
 import {put, select} from "redux-saga/effects";
 import {message} from "antd";
 
 
-const actGens=  ActionGenerators({
+const actGens=  ActionGenerator({
 
   nameSpace: 'ADMIN',
 
@@ -25,7 +25,7 @@ const actGens=  ActionGenerators({
             }
           );
 
-          yield put(actGens['setCrmUserList'].gen({
+          yield put(actGens.setCrmUserList({
 
             crmUserList: response.result
 
@@ -74,7 +74,7 @@ const actGens=  ActionGenerators({
 
         }
 
-        yield put(actGens['getCrmUserList'].gen());
+        yield put(actGens.getCrmUserList());
       }
 
     },
@@ -105,7 +105,7 @@ const actGens=  ActionGenerators({
 
         }
 
-        yield put(actGens['getCrmUserList'].gen());
+        yield put(actGens.getCrmUserList());
       }
 
     },
@@ -143,7 +143,7 @@ const actGens=  ActionGenerators({
 
         }
 
-        yield put(actGens['getCrmUserList'].gen());
+        yield put(actGens.getCrmUserList());
       }
 
     },
