@@ -3,7 +3,7 @@ import {Button, Icon, Modal} from 'antd';
 import {useDispatch, useSelector} from "react-redux";
 import adminActions from "../../actions/admin";
 import FormAddUser from "./FormAddUser";
-import { newObject } from "../../sagadux"
+import { newObject } from "../../reduxaga"
 
 
 export default function AddUserModal(props) {
@@ -19,8 +19,8 @@ export default function AddUserModal(props) {
       }}));
   };
 
-  const state = useSelector(adminActions.selector(s=>s.addUserModal));
-  console.log(state);
+  const state = useSelector(adminActions.selector("addUserModal"));
+  //console.log(useSelector(adminActions.selector("addUserModal","visible")));
 
   const setState = (s) => {
     dispatch(adminActions.setAddUserModal({addUserModal:newObject(state,s)}));

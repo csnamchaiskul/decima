@@ -5,7 +5,7 @@ import loginActions from '../actions/login';
 import adminActions from '../actions/admin';
 import pathActions from '../actions/path';
 import appActions from '../actions/app';
-import {doTakeEvery} from "../sagadux";
+import {doTakeEvery} from "../reduxaga";
 
 
 
@@ -22,10 +22,24 @@ export default function* rootSaga() {
 
 
 export function* apiCall(method,args){
-  yield put (appActions.doLoading({loadingMessage:'Loading...'}));
-  const response = yield call(method,args);
-  yield put (appActions.setLoading({loading:false}));
-  return response;
+  try {
+
+    if (!args.accessToken) {
+      let accessToken = yield select(loginActions.selector("accessToken"));
+      if (args && accessToken) args.accessToken = accessToken;
+    }
+    yield put(appActions.doLoading({loadingMessage: 'Loading...'}));
+    const response = yield call(method, args);
+    yield put(appActions.setLoading({loading: false}));
+    return response;
+
+  } catch(err) {
+
+    yield put(appActions.setLoading({loading: false}));
+    throw err;
+
+  }
+
 }
 
 

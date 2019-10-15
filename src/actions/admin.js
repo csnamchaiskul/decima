@@ -1,4 +1,4 @@
-import {createActions} from '../sagadux';
+import {createActions} from '../reduxaga';
 import {apiCall} from "../sagas";
 import {getApi, postApi} from "../services/apiService";
 import {put, select} from "redux-saga/effects";
@@ -21,7 +21,6 @@ const adminActions=  createActions({
           const response = yield* apiCall(getApi,
             {
               url: '/user/list/crmuser',
-              accessToken: yield select(state=>state.login.accessToken)
             }
           );
 
@@ -53,7 +52,6 @@ const adminActions=  createActions({
           const response = yield* apiCall(postApi,
             {
               url: '/user/add',
-              accessToken: yield select(state => state.login.accessToken),
               body: {
                 email: action.email,
                 password: action.password
@@ -121,7 +119,6 @@ const adminActions=  createActions({
           const response = yield* apiCall(postApi,
             {
               url: '/user/changePassword',
-              accessToken: yield select(state => state.login.accessToken),
               body: {
                 id: action.userId,
                 password: action.password

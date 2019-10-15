@@ -1,4 +1,4 @@
-import {createActions} from '../sagadux';
+import {createActions} from '../reduxaga';
 
 
 const appActions =  createActions({

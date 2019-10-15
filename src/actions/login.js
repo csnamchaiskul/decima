@@ -1,4 +1,4 @@
-import {createActions} from '../sagadux';
+import {createActions} from '../reduxaga';
 import {apiCall} from "../sagas";
 import {postApi} from "../services/apiService";
 import jwtDecode from "jwt-decode";

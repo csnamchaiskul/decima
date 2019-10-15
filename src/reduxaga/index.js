@@ -2,11 +2,6 @@ import produce from "immer";
 import { takeEvery as reduxTakeEvery } from 'redux-saga/effects';
 import { createSelector } from 'reselect';
 
-
-export const prefix = reducers => Object.values(reducers).map((o)=>o.nameSpace);
-
-export const getNameSpace =  (nameSpace) => ((nameSpace) ? nameSpace.replace('actions.','').toUpperCase() : nameSpace);
-
 export const createActions = ({nameSpace,actions,initState,reduceFn})=>{
 
   console.log("Create action generator: "+ nameSpace);
@@ -41,16 +36,13 @@ export const createActions = ({nameSpace,actions,initState,reduceFn})=>{
         ),
       {});
 
-  //console.log(actGens);
-
-
   actGens.reduceFns = Object.values(actGens)
-      .reduce(
-        (acc,gen)=>((gen && typeof gen.reduceFn==='function')?
-          Object.assign(acc,{ [gen.type] :
-            gen.reduceFn }):acc),
-        {}
-      );
+    .reduce(
+      (acc,gen)=>((gen && typeof gen.reduceFn==='function')?
+        Object.assign(acc,{ [gen.type] :
+          gen.reduceFn }):acc),
+      {}
+    );
 
   actGens.sagaFns = Object.values(actGens)
     .reduce(
@@ -60,25 +52,29 @@ export const createActions = ({nameSpace,actions,initState,reduceFn})=>{
       {}
     );
 
-  //console.log(actGens.sagaFnMap);
-
   actGens.nameSpace = nameSpace;
   actGens.initState = initState;
-  //actGens.selector = (state) =>(state[nameSpace.toLowerCase()]);
+  actGens.reselector = createSelector(  (state)=>state[nameSpace.toLowerCase()],
+                                        state=>state);
   actGens.selector = (...selectors)=>{
-    if(selectors.length<=1)
+
+    if(selectors.length<=0)
+      return actGens.reselector;
+    else if(selectors.length===1)
       switch(typeof selectors[0]) {
         case 'function':
-          return ((state) => selectors[0](state[nameSpace.toLowerCase()]));
+          return createSelector(actGens.reselector,selectors[0]);
 
         case 'string':
-          return (state) => state[nameSpace.toLowerCase()][selectors[0]];
+          return createSelector(actGens.reselector,state=>state[selectors[0]]);
         default:
           throw "Error!";
       }
-    else{
-
-    }
+    else
+      return createSelector(
+        actGens.reselector,
+        eval("state=>"+selectors.reduce((acc,i)=>i && typeof i === 'string' && (acc+'["'+i+'"]') || acc,
+        'state')));
 
   };
   actGens.reducer = produce((state, action) => {
@@ -98,12 +94,9 @@ export const createActions = ({nameSpace,actions,initState,reduceFn})=>{
 
   }, actGens.initState);
 
-  //console.log(actGens);
   return actGens;
 
 };
-
-export const genSelector= (...items) => items.map((item)=>((state)=>state[item]));
 
 const convertReduceFn = (key,rawFn) => {
 
@@ -127,8 +120,6 @@ const convertReduceFn = (key,rawFn) => {
   }
 
 };
-
-export const plusSecondToNow= (second) => (new Date()).getTime()+(second)*1000;
 
 export const newObject = produce((draft,...src)=>Object.assign(draft,...src));
 

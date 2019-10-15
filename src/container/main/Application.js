@@ -13,6 +13,7 @@ export default function Application(props){
 
   const dispatch = useDispatch();
 
+
   return (<Row><Col span={12}>
     <Row><Col span={12}>
       <PageHeader title={'John John'} subTitle={'last app createDate + status'}/>
