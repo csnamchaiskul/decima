@@ -1,5 +1,5 @@
-import {createActions} from '../reduxaga';
-import {apiCall} from "../sagas";
+import {createActions} from "reduxaga";
+import {apiCall} from "./sagas";
 import {getApi, postApi} from "../services/apiService";
 import {put, select} from "redux-saga/effects";
 import {message} from "antd";

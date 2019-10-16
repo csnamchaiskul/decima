@@ -4,8 +4,9 @@ import adminActions from '../actions/admin';
 import localStorageActions from "../actions/localStore";
 import {persistReducer} from "redux-persist";
 import {localStorePersistConfig} from "../config/configPersist";
+import rootSagas from "./sagas"
 
-export default {
+export const rootReducer = {
 
   app:appActions.reducer,
   login:loginActions.reducer,

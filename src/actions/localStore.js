@@ -1,4 +1,4 @@
-import {createActions} from '../reduxaga';
+import {createActions} from 'reduxaga';
 
 
 const localStoreActions =  createActions({

@@ -3,7 +3,7 @@ import {Button, Icon, Modal} from 'antd';
 import {useDispatch, useSelector} from "react-redux";
 import adminActions from "../../actions/admin";
 import FormAddUser from "./FormAddUser";
-import { newObject } from "../../reduxaga"
+import { newObject } from "reduxaga"
 
 
 export default function AddUserModal(props) {

@@ -1,5 +1,5 @@
-import {createActions} from '../reduxaga';
-import {apiCall} from "../sagas";
+import {createActions} from 'reduxaga';
+import {apiCall} from "./sagas";
 import {postApi} from "../services/apiService";
 import jwtDecode from "jwt-decode";
 import {put} from "redux-saga/effects";
@@ -57,12 +57,7 @@ const loginActions=  createActions({
     setLogin:
       {
 
-        reduceFn: ({state,action})=>Object.assign(state,{
-          accessToken:action.accessToken,
-          accessTokenExpired: action.accessTokenExpired,
-          userId: action.userId,
-          authorities: action.authorities,
-        })
+        reduceFn: "setAll"
 
       },
     initLogin:

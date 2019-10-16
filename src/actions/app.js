@@ -1,4 +1,4 @@
-import {createActions} from '../reduxaga';
+import {createActions} from 'reduxaga';
 
 
 const appActions =  createActions({
@@ -33,10 +33,9 @@ const appActions =  createActions({
       reduceFn:
         ({initState}) => initState,
     },
-    doLoading: { reduceFn:
-                  ({state,action})=> {  state.loading= true;
-                                        state.loadingMessage =action.loadingMessage;}
-              },
+    doLoading: {
+      reduceFn: "setAll"
+    },
     setLoading: { reduceFn: 'set' },
     setLoadingMessage: { reduceFn: 'set'},
   }

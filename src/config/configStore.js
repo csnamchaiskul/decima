@@ -14,9 +14,9 @@ import {rootPersistConfig} from './configPersist';
 import { connectRoute } from './configRoute';
 
 
-import reducers from '../reducers';
+import {rootReducer} from '../actions';
 import localStoreActGen from '../actions/localStore';
-import sagas from '../sagas';
+import sagas from '../actions/sagas';
 
 
 const localStoreReducer = localStoreActGen.reducer;
@@ -35,7 +35,7 @@ export default (preloadedState) => {
 
   const persistedReducer = persistReducer(rootPersistConfig, combineReducers(
     {
-      ...reducers,
+      ...rootReducer,
     location:routerReducer}));
 
 
