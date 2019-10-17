@@ -9184,10 +9184,10 @@ redux-saga@^1.0.5:
     loose-envify "^1.4.0"
     symbol-observable "^1.2.0"
 
-reduxaga@0.0.14:
-  version "0.0.14"
-  resolved "https://registry.yarnpkg.com/reduxaga/-/reduxaga-0.0.14.tgz#2a13d18c7e4f428a29f7ac77a7ed106fc27fbbb1"
-  integrity sha512-n0xBn0JOAVnL4Cr0OnljX87agqWonsxlQmFGJML/K+zhE/RdoYUcnu5qISbsAsmlhtBxfv+6d1hLziMm6pJ0Gg==
+reduxaga@0.0.15:
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/reduxaga/-/reduxaga-0.0.15.tgz#a7ba11fdbd8c6207051c45e2bcbcfc22ad728a8c"
+  integrity sha512-Z6lD3nyyXJS0T395vSybLj4mff06f8I2HpykKZrLY6vlo18WILxscFu1NGldvVw0F8tnsAayESjloK8+/dfCqA==
   dependencies:
     immer "^4.0.1"
     redux-saga "^1.0.5"
