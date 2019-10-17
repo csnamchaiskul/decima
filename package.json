@@ -28,7 +28,7 @@
     "redux-form": "^8.2.6",
     "redux-persist": "^6.0.0",
     "redux-saga": "^1.0.5",
-    "reduxaga": "git+https://github.com/csnamchaiskul/reduxaga#0.0.8",
+    "reduxaga": "0.0.14",
     "reselect": "^4.0.0"
   },
   "scripts": {

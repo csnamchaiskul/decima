@@ -9184,9 +9184,10 @@ redux-saga@^1.0.5:
     loose-envify "^1.4.0"
     symbol-observable "^1.2.0"
 
-"reduxaga@git+https://github.com/csnamchaiskul/reduxaga#0.0.8":
-  version "0.0.8"
-  resolved "git+https://github.com/csnamchaiskul/reduxaga#142ffe750af04186005be839eddba7b72a026603"
+reduxaga@0.0.14:
+  version "0.0.14"
+  resolved "https://registry.yarnpkg.com/reduxaga/-/reduxaga-0.0.14.tgz#2a13d18c7e4f428a29f7ac77a7ed106fc27fbbb1"
+  integrity sha512-n0xBn0JOAVnL4Cr0OnljX87agqWonsxlQmFGJML/K+zhE/RdoYUcnu5qISbsAsmlhtBxfv+6d1hLziMm6pJ0Gg==
   dependencies:
     immer "^4.0.1"
     redux-saga "^1.0.5"
