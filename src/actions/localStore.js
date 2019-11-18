@@ -1,20 +1,15 @@
-import {createActions} from 'reduxaga';
+import { createActions } from "reduxaga";
 
-
-const localStoreActions =  createActions({
-
+const localStoreActions = createActions({
   nameSpace: "LOCALSTORE",
 
   initState: {
     email: null
-
   },
 
   actions: {
-
-    setEmail: { reduceFn: 'set' }
+    setEmail: { reduceFn: "set" }
   }
 });
 
 export default localStoreActions;
-

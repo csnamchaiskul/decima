@@ -1,65 +1,68 @@
-import React,{ useState } from 'react';
-import {Button, Icon, Modal} from 'antd';
-import {useDispatch, useSelector} from "react-redux";
+import React, { useState } from "react";
+import { Button, Icon, Modal } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 import adminActions from "../../actions/admin";
 import FormAddUser from "./FormAddUser";
-import { newObject } from "reduxaga"
-
+import { newObject } from "reduxaga";
 
 export default function AddUserModal(props) {
-
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   let formRef;
 
-  const onAddUserButtonClick = (e)=>{
-    dispatch(adminActions.setAddUserModal({
-      reduceFn:({state,action})=>{
-        state.addUserModal.visible = true;
-        state.addUserModal.confirmLoading = false;
-      }}));
+  const onAddUserButtonClick = e => {
+    dispatch(
+      adminActions.setAddUserModal({
+        reduceFn: ({ state, action }) => {
+          state.addUserModal.visible = true;
+          state.addUserModal.confirmLoading = false;
+        }
+      })
+    );
   };
 
   const state = useSelector(adminActions.selector("addUserModal"));
   //console.log(useSelector(adminActions.selector("addUserModal","visible")));
 
-  const setState = (s) => {
-    dispatch(adminActions.setAddUserModal({addUserModal:newObject(state,s)}));
+  const setState = s => {
+    dispatch(
+      adminActions.setAddUserModal({ addUserModal: newObject(state, s) })
+    );
   };
 
-
-  const onAddUserOk = (e)=>{
-    setState({confirmLoading:true});
-    dispatch(adminActions.addCrmUser({
-      email: formRef.props.form.getFieldValue('email'),
-      password: formRef.props.form.getFieldValue('password'),
-    }));
-
+  const onAddUserOk = e => {
+    setState({ confirmLoading: true });
+    dispatch(
+      adminActions.addCrmUser({
+        email: formRef.props.form.getFieldValue("email"),
+        password: formRef.props.form.getFieldValue("password")
+      })
+    );
   };
 
-  const onAddUserCancel= (e)=>{
-    setState({visible:false});
-
+  const onAddUserCancel = e => {
+    setState({ visible: false });
   };
 
-
-
-  return (<span>
-    <Button type='primary' onClick={onAddUserButtonClick}><Icon type={'user-add'}/></Button>
-  <Modal
-    title="Add User"
-    visible={state.visible}
-    onOk={onAddUserOk}
-    confirmLoading={state.confirmLoading}
-    onCancel={onAddUserCancel}
-    okText={"Add"}
-  >
-
-    <FormAddUser
-      dispatch={dispatch}
-      wrappedComponentRef={(inst) => {
-        formRef = inst;
-    }} />
-
-  </Modal></span>)
-
+  return (
+    <span>
+      <Button type="primary" onClick={onAddUserButtonClick}>
+        <Icon type={"user-add"} />
+      </Button>
+      <Modal
+        title="Add User"
+        visible={state.visible}
+        onOk={onAddUserOk}
+        confirmLoading={state.confirmLoading}
+        onCancel={onAddUserCancel}
+        okText={"Add"}
+      >
+        <FormAddUser
+          dispatch={dispatch}
+          wrappedComponentRef={inst => {
+            formRef = inst;
+          }}
+        />
+      </Modal>
+    </span>
+  );
 }

@@ -1,82 +1,63 @@
-import {createActions} from "reduxaga";
-import {apiCall} from "./sagas";
-import {getApi, postApi} from "../services/apiService";
-import {put, select} from "redux-saga/effects";
-import {message} from "antd";
+import { createActions } from "reduxaga";
+import { apiCall } from "./sagas";
+import { getApi, postApi } from "../services/apiService";
+import { put, select } from "redux-saga/effects";
+import { message } from "antd";
 
+const adminActions = createActions({
+  nameSpace: "ADMIN",
 
-const adminActions=  createActions({
-
-  nameSpace: 'ADMIN',
-
-  actions:{
+  actions: {
     getCrmUserList: {
-
-      sagaFn: function* getCrmUserList(action){
-
+      sagaFn: function* getCrmUserList(action) {
         //console.log(action);
 
         try {
+          const response = yield* apiCall(getApi, {
+            url: "/user/list/crmuser"
+          });
 
-          const response = yield* apiCall(getApi,
-            {
-              url: '/user/list/crmuser',
-            }
+          yield put(
+            adminActions.setCrmUserList({
+              crmUserList: response.result
+            })
           );
-
-          yield put(adminActions.setCrmUserList({
-
-            crmUserList: response.result
-
-          }));
 
           // yield put(localStoreActionGens.get('setEmail').gen({email:action.email}));
           //
           // yield put({type:'PATH:Router'});
-
-        } catch(error){
-
-          message.error('Fail to get list');
+        } catch (error) {
+          message.error("Fail to get list");
           console.log(error);
           //yield put({type: "APP:disable",disableMessage:"Permission denied: Please contact tech support."})
-
         }
-
       }
-
     },
 
-    addCrmUser:{
+    addCrmUser: {
       sagaFn: function* addCrmUser(action) {
         try {
-          const response = yield* apiCall(postApi,
-            {
-              url: '/user/add',
-              body: {
-                email: action.email,
-                password: action.password
-              }
+          const response = yield* apiCall(postApi, {
+            url: "/user/add",
+            body: {
+              email: action.email,
+              password: action.password
             }
-          );
-
+          });
 
           // yield put(localStoreActionGens.get('setEmail').gen({email:action.email}));
           //
           // yield put({type:'PATH:Router'});
-
         } catch (error) {
-
-          message.error('Fail to add user');
+          message.error("Fail to add user");
           console.log(error);
           //yield put({type: "APP:disable",disableMessage:"Permission denied: Please contact tech support."})
-
         }
 
         yield put(adminActions.getCrmUserList());
       }
-
     },
-    deleteCrmUser:{
+    deleteCrmUser: {
       sagaFn: function* deleteCrmUser(action) {
         try {
           // const response = yield call(postApi,
@@ -89,87 +70,65 @@ const adminActions=  createActions({
           //     }
           //   }
           // );
-
-
           // yield put(localStoreActionGens.get('setEmail').gen({email:action.email}));
           //
           // yield put({type:'PATH:Router'});
-
         } catch (error) {
-
-          message.error('Fail to add user');
+          message.error("Fail to add user");
           console.log(error);
           //yield put({type: "APP:disable",disableMessage:"Permission denied: Please contact tech support."})
-
         }
 
         yield put(adminActions.getCrmUserList());
       }
-
     },
-    toggleLockCrmUser:{
-
-    },
-    toggleAdminCrmUser:{
-
-    },
+    toggleLockCrmUser: {},
+    toggleAdminCrmUser: {},
     changePassword: {
       sagaFn: function* changePassword(action) {
         try {
-          const response = yield* apiCall(postApi,
-            {
-              url: '/user/changePassword',
-              body: {
-                id: action.userId,
-                password: action.password
-              }
+          const response = yield* apiCall(postApi, {
+            url: "/user/changePassword",
+            body: {
+              id: action.userId,
+              password: action.password
             }
-          );
-
-
+          });
 
           // yield put(localStoreActionGens.get('setEmail').gen({email:action.email}));
           //
           // yield put({type:'PATH:Router'});
-
         } catch (error) {
-
-          message.error('Fail to change password');
+          message.error("Fail to change password");
           console.log(error);
           //yield put({type: "APP:disable",disableMessage:"Permission denied: Please contact tech support."})
-
         }
 
         yield put(adminActions.getCrmUserList());
       }
-
     },
-    setAddUserModal:{
-      reduceFn: 'set'
+    setAddUserModal: {
+      reduceFn: "set"
     },
-    setCrmUserList:
-      {
-
-        reduceFn: ({state,action})=>Object.assign(state,{
+    setCrmUserList: {
+      reduceFn: ({ state, action }) =>
+        Object.assign(state, {
           crmUserListLastUpdate: new Date().getTime(),
           crmUserList: action.crmUserList,
-          addUserModal: { visible: false, confirmLoading: false}
+          addUserModal: { visible: false, confirmLoading: false }
         })
-      },
-
-    init:
-      { reduceFn: ({initState})=>initState},
-
-
     },
+
+    init: { reduceFn: ({ initState }) => initState }
+  },
 
   initState: {
     crmUserListLastUpdate: 0,
     crmUserList: [],
     addUserModal: {
       visible: false,
-      comfirmLoading: false,
-    },
+      comfirmLoading: false
+    }
   }
 });
 

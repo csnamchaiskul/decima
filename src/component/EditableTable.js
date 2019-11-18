@@ -1,8 +1,7 @@
-
-import React from 'react';
-import 'antd/dist/antd.css';
-import './EditableTable.css';
-import { Table, Input, Button, Popconfirm, Form } from 'antd';
+import React from "react";
+import "antd/dist/antd.css";
+import "./EditableTable.css";
+import { Table, Input, Button, Popconfirm, Form } from "antd";
 
 const EditableContext = React.createContext();
 
@@ -16,7 +15,7 @@ const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
   state = {
-    editing: false,
+    editing: false
   };
 
   toggleEdit = () => {
@@ -49,11 +48,17 @@ class EditableCell extends React.Component {
           rules: [
             {
               required: true,
-              message: `${title} is required.`,
-            },
+              message: `${title} is required.`
+            }
           ],
-          initialValue: record[dataIndex],
-        })(<Input ref={node => (this.input = node)} onPressEnter={this.save} onBlur={this.save} />)}
+          initialValue: record[dataIndex]
+        })(
+          <Input
+            ref={node => (this.input = node)}
+            onPressEnter={this.save}
+            onBlur={this.save}
+          />
+        )}
       </Form.Item>
     ) : (
       <div
@@ -90,23 +95,22 @@ class EditableCell extends React.Component {
 }
 
 class EditableTable extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      dataSource : props.dataSource,
+      dataSource: props.dataSource,
       count: props.dataSource.length,
-      dataSourceLastUpdate : props.dataSourceLastUpdate,
-    }
+      dataSourceLastUpdate: props.dataSourceLastUpdate
+    };
   }
 
   static getDerivedStateFromProps(props, state) {
-    if(props.dataSourceLastUpdate>state.dataSourceLastUpdate) {
+    if (props.dataSourceLastUpdate > state.dataSourceLastUpdate) {
       return {
         dataSourceLastUpdate: props.dataSourceLastUpdate,
         count: props.dataSource.length,
         dataSource: props.dataSource
-      }
+      };
     }
     return state;
   }
@@ -119,13 +123,13 @@ class EditableTable extends React.Component {
   handleAdd = () => {
     const { count, dataSource } = this.state;
     const newData = {
-      email: 'user@email.com',
+      email: "user@email.com",
       locked: false,
       authorities: ["ROLE_CRMUSER"]
     };
     this.setState({
       dataSource: [...dataSource, newData],
-      count: count + 1,
+      count: count + 1
     });
   };
 
@@ -135,7 +139,7 @@ class EditableTable extends React.Component {
     const item = newData[index];
     newData.splice(index, 1, {
       ...item,
-      ...row,
+      ...row
     });
     this.setState({ dataSource: newData });
   };
@@ -145,8 +149,8 @@ class EditableTable extends React.Component {
     const components = {
       body: {
         row: EditableFormRow,
-        cell: EditableCell,
-      },
+        cell: EditableCell
+      }
     };
     const columns = this.props.columns.map(col => {
       if (!col.editable) {
@@ -159,15 +163,15 @@ class EditableTable extends React.Component {
           editable: col.editable,
           dataIndex: col.dataIndex,
           title: col.title,
-          handleSave: this.handleSave,
-        }),
+          handleSave: this.handleSave
+        })
       };
     });
     return (
       <div>
         <Table
           components={components}
-          rowClassName={() => 'editable-row'}
+          rowClassName={() => "editable-row"}
           bordered
           dataSource={dataSource}
           columns={columns}
