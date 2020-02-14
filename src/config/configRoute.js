@@ -1,13 +1,23 @@
-import React from "react";
-import Application from "../container/main/Application";
+import React,{ Suspense } from "react";
+
 import Main from "../container/Main";
-import Login from "../container/Login";
+
 import Redirect from "../container/Redirect";
-import ApplicationList from "../container/main/ApplicationList";
-import Admin from "../container/Admin";
+import Spinner from "../component/Spinner";
 
 import { connectRoutes } from "redux-first-router";
 import { createBrowserHistory as createHistory } from "history";
+
+// import Application from "../container/main/Application";
+// import ApplicationList from "../container/main/ApplicationList";
+//import Admin from "../container/Admin";
+const Login = React.lazy(()=>{console.log("Lazy Load Login");return import("../container/Login")});
+const Application = React.lazy(()=> {console.log("Lazy Load Application");return import("../container/main/Application")});
+const ApplicationList = React.lazy(()=> {console.log("Lazy Load ApplicationList");return import("../container/main/ApplicationList")});
+const Admin = React.lazy(()=>{console.log("Lazy Load Admin");return import("../container/Admin")});
+
+//const Spinner = import("../component/Spinner");
+
 
 const config = {
   "PATH:Router": { path: "/", container: <Redirect /> },
@@ -15,16 +25,20 @@ const config = {
     path: "/main",
     container: (
       <Main>
-        <ApplicationList />
+        <Suspense fallback={<Spinner />}>
+          <ApplicationList />
+        </Suspense>
       </Main>
     )
   },
-  "PATH:Login": { path: "/login", container: <Login /> },
+  "PATH:Login": { path: "/login", container: <Suspense fallback={<Spinner/>}> <Login /> </Suspense>},
   "PATH:Application": {
     path: "/application/:userId",
     container: (
       <Main>
-        <Application />
+        <Suspense fallback={<Spinner />}>
+          <Application />
+        </Suspense>
       </Main>
     )
   },
@@ -32,7 +46,9 @@ const config = {
     path: "/admin",
     container: (
       <Main>
-        <Admin />
+        <Suspense fallback={<Spinner />}>
+          <Admin />
+        </Suspense>
       </Main>
     )
   }

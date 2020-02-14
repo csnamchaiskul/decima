@@ -1,4 +1,4 @@
-const {override, fixBabelImports, addLessLoader} = require('customize-cra');
+const {override, fixBabelImports, addLessLoader, addBabelPlugin} = require('customize-cra');
 const aliyunTheme = require('@ant-design/aliyun-theme');
 
 module.exports = override(
