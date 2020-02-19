@@ -2,13 +2,14 @@ import React from "react";
 import { Layout, Menu, Icon } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "redux-first-router-link";
+import loginActions from "../actions/login";
 
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
 export default function AppHeader(props) {
-  const isLogin = !!useSelector(state => state.login.accessToken);
-  const isAdmin = !!useSelector(state => state.login.authorities).find(
+  const isLogin = !!useSelector(loginActions.selector("accessToken"));
+  const isAdmin = !!useSelector(loginActions.selector("authorities")).find(
     i => i === "ROLE_CRMADMIN"
   );
   const dispatch = useDispatch();

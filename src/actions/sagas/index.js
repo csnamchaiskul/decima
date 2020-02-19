@@ -21,16 +21,20 @@ export default function* rootSaga() {
   yield all([
     ...loginActions.takeEvery(),
     ...appActions.takeEvery(),
-    ...adminActions.takeEvery()
+    ...adminActions.takeEvery(),
+    ...pathActions.takeEvery()
   ]);
 }
 
 export function* apiCall(method, args) {
+
   try {
     if (!args.accessToken) {
+      console.log(yield select(loginActions.selector()));
       let accessToken = yield select(loginActions.selector("accessToken"));
       if (args && accessToken) args.accessToken = accessToken;
     }
+
     yield put(
       appActions.doLoading({ loading: true, loadingMessage: "Loading..." })
     );

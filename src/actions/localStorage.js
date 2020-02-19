@@ -1,7 +1,7 @@
 import { createActions } from "reduxaga";
 
 const localStoreActions = createActions({
-  nameSpace: "LOCALSTORE",
+  nameSpace: "LOCALSTORAGE",
 
   initState: {
     email: null

@@ -3,7 +3,7 @@ import { apiCall } from "./sagas";
 import { postApi } from "../services/apiService";
 import jwtDecode from "jwt-decode";
 import { put } from "redux-saga/effects";
-import localStoreActions from "./localStore";
+import localStoreActions from "./localStorage";
 import { message } from "antd";
 
 const loginActions = createActions({

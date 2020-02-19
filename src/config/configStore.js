@@ -3,6 +3,7 @@ import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
 import { createStore, applyMiddleware, combineReducers } from "redux";
 
 import createSagaMiddleware from "redux-saga";
+import pathActions from "../actions/path";
 
 // Redux persist
 import { persistReducer, persistStore } from "redux-persist";
@@ -14,7 +15,7 @@ import { rootPersistConfig } from "./configPersist";
 import { connectRoute } from "./configRoute";
 
 import { rootReducer } from "../actions";
-import localStoreActGen from "../actions/localStore";
+import localStoreActGen from "../actions/localStorage";
 import sagas from "../actions/sagas";
 
 const localStoreReducer = localStoreActGen.reducer;
@@ -34,7 +35,7 @@ export default preloadedState => {
     rootPersistConfig,
     combineReducers({
       ...rootReducer,
-      location: routerReducer
+      [pathActions.nameSpace]: routerReducer
     })
   );
 

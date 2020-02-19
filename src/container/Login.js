@@ -5,14 +5,16 @@ import { useSelector, useDispatch } from "react-redux";
 
 import FormLogin from "./login/FormLogin";
 import AppHeader from "./AppHeader";
+import localStoreActions from "../actions/localStorage";
+import loginActions from "../actions/login";
 
 const { Header, Footer, Sider, Content } = Layout;
 
 export default function Login(props) {
-  const email = useSelector(state => state.localStorage.email);
+  const email = useSelector(localStoreActions.selector("email"));
   const dispatch = useDispatch();
 
-  dispatch({ type: "LOGIN:initLogin" });
+  dispatch(loginActions.initLogin());
   //if(accessToken) dispatch({type:"PATH:Application"});
 
   return (

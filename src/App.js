@@ -2,10 +2,11 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch, connect } from "react-redux";
 import Spin from "./component/Spinner";
+import appActions from "./actions/app";
+import loginActions from "./actions/login";
 
 import "./App.css";
-import { routedContainer } from "./config/configRoute";
-import mapDispatchToProps from "react-redux/lib/connect/mapDispatchToProps";
+import pathActions from "./actions/path";
 
 function App(props) {
   useEffect(() => {
@@ -30,21 +31,21 @@ function App(props) {
   });
 
   return (
-    <Spin tip={"Loading"} spinning={useSelector(state => state.app.loading)}>
-      {routedContainer(useSelector(state => state.location.type))}
+    <Spin tip={"Loading"} spinning={useSelector(appActions.selector("loading"))}>
+      {pathActions.getTargetContainer(useSelector(pathActions.selector("type")))}
     </Spin>
   );
 }
 
 export default connect(
   state => ({
-    accessTokenExpired: state.login.accessTokenExpired,
-    isLogin: !!state.login.accessToken
+    accessTokenExpired: loginActions.selector("accessTokenExpired")(state), //state.login.accessTokenExpired
+    isLogin: !!loginActions.selector("accessToken")(state)
   }),
   dispatch => ({
     logout: () => {
       //dispatch({type:'LOGIN:initLogin'});
-      dispatch({ type: "PATH:Login" });
+      dispatch(pathActions.Login());
     }
   })
 )(App);

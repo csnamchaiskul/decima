@@ -3,6 +3,7 @@ import Link from "redux-first-router-link";
 import { Icon } from "antd";
 import { Table, Divider, Tag } from "antd";
 import DataTable from "../../component/DataTable";
+import pathActions from "../../actions/path";
 
 const columns = [
   {
@@ -10,7 +11,7 @@ const columns = [
     key: "view",
     render: (text, record) => (
       <Link
-        to={{ type: "PATH:Application", payload: { userId: record.userId } }}
+        to={pathActions.Application({payload: { userId: record.userId } })}
       >
         <Icon type={"eye"} />
       </Link>

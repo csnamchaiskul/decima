@@ -34,7 +34,7 @@ const getAxios = (accessToken, contentType) => {
 
 export const postApi = ({ url, accessToken, contentType, body }) => {
   loading();
-
+  console.log(url);
   return getAxios(accessToken, contentType)
     .post(genURL(url), body)
     .then(res => loaded() && res.data)
