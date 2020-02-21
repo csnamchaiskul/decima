@@ -4,8 +4,8 @@ import { Steps, Button, message, Layout, Row, Col, Card } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import AppHeader from "./AppHeader";
 import AppSider from "./AppSider";
-import FormLogin from "./login/FormLogin";
-import ApplicationList from "./main/ApplicationList";
+
+
 import loginActions from "../actions/login";
 import pathActions from "../actions/path";
 

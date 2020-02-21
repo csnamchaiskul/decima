@@ -45,6 +45,7 @@ const loginActions = createActions({
     setLogin: {
       reduceFn: "setAll"
     },
+
     initLogin: {
       reduceFn: ({ initState }) => initState
     }

@@ -27,7 +27,7 @@ export default function AppHeader(props) {
               ghost
               style={{ float: "right", verticalAlign: "middle" }}
               onClick={e => {
-                dispatch(pathActions.Logout());
+                dispatch(loginActions.initLogin());
               }}
             >
               Logout

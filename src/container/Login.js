@@ -1,14 +1,51 @@
 import React from "react";
 
-import { Layout, Row, Col, Card } from "antd";
+import {Layout, Row, Col, Card, Icon, Button} from "antd";
 import { useSelector, useDispatch } from "react-redux";
+import { required,email } from "../utils/fieldValidation"
 
-import FormLogin from "./login/FormLogin";
 import AppHeader from "./AppHeader";
 import localStoreActions from "../actions/localStorage";
 import loginActions from "../actions/login";
+import { login } from "../form/login"
+import {Field, reduxForm} from "redux-form";
+import {AInput} from "../component/antdElement";
 
-const { Header, Footer, Sider, Content } = Layout;
+export const FormLogin=reduxForm({ form: "login"})( (props)=> {
+
+  const { invalid,handleSubmit} = props;
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <Field
+        name={"email"}
+        component={AInput}
+        type="text"
+        prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
+        placeholder="Email"
+        validate={[required,email]}
+      />
+
+      <Field
+        name={"password"}
+        component={AInput}
+        prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
+        type="password"
+        placeholder="Password"
+      />
+
+      <Button
+        type="primary"
+        htmlType="submit"
+        disabled={invalid}
+      >
+        Log in
+      </Button>
+
+    </form>
+  );
+});
+
 
 export default function Login(props) {
   const email = useSelector(localStoreActions.selector("email"));
@@ -20,18 +57,21 @@ export default function Login(props) {
   return (
     <Layout>
       <AppHeader />
-      <Content>
+      <Layout.Content>
         <Row type="flex" justify="space-around" align="middle">
           <Col span={8} />
           <Col span={8}>
             <Card title={"Login"}>
-              <FormLogin email={email} />
+              <FormLogin
+                onSubmit={login.onSubmit}
+                validate={login.validate}
+                initialValues={{email:email}} />
             </Card>
           </Col>
           <Col span={8} />
         </Row>
-      </Content>
-      <Footer />
+      </Layout.Content>
+      <Layout.Footer />
     </Layout>
   );
 }
