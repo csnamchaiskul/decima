@@ -1,13 +1,47 @@
 import React, { useState } from "react";
-import { Button, Icon, Modal } from "antd";
+import {Button, Form, Icon, Input, Modal} from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import adminActions from "../../actions/admin";
-import FormAddUser from "./FormAddUser";
+//import FormAddUser from "./FormAddUser";
 import { newObject } from "reduxaga";
+import {reduxForm} from "../../utils/reduxFormHelpers";
+import {submit, isValid} from "redux-form";
+import {addUser} from "../../form/admin";
+import {AInput} from "../../component/antdElement";
+import {Field} from "redux-form";
+
+export const FormAddUser = reduxForm(addUser)((props)=> {
+
+  const { handleSubmit} = props;
+
+  return (
+
+    <form onSubmit={handleSubmit}>
+      <Field
+        name={"email"}
+        component={AInput}
+        type={"text"}
+        prefix={<Icon type="user" style={{color: "rgba(0,0,0,.25)"}}/>}
+        placeholder={"Email"}
+
+      />
+
+      <Field
+        name={"password"}
+        component={AInput}
+        type={"password"}
+        placeholder={"Password"}
+        prefix={<Icon type="lock" style={{color: "rgba(0,0,0,.25)"}}/>}
+      />
+
+    </form>
+  );
+
+});
+
 
 export default function AddUserModal(props) {
   const dispatch = useDispatch();
-  let formRef;
 
   const onAddUserButtonClick = e => {
     dispatch(
@@ -20,8 +54,9 @@ export default function AddUserModal(props) {
     );
   };
 
+  //get State from Redux
   const state = useSelector(adminActions.selector("addUserModal"));
-  //console.log(useSelector(adminActions.selector("addUserModal","visible")));
+  const valid = useSelector(isValid(addUser.form));
 
   const setState = s => {
     dispatch(
@@ -31,12 +66,7 @@ export default function AddUserModal(props) {
 
   const onAddUserOk = e => {
     setState({ confirmLoading: true });
-    dispatch(
-      adminActions.addCrmUser({
-        email: formRef.props.form.getFieldValue("email"),
-        password: formRef.props.form.getFieldValue("password")
-      })
-    );
+    dispatch(submit(addUser.form));
   };
 
   const onAddUserCancel = e => {
@@ -45,7 +75,9 @@ export default function AddUserModal(props) {
 
   return (
     <span>
-      <Button type="primary" onClick={onAddUserButtonClick}>
+      <Button type="primary"
+              onClick={onAddUserButtonClick}
+      >
         <Icon type={"user-add"} />
       </Button>
       <Modal
@@ -55,13 +87,9 @@ export default function AddUserModal(props) {
         confirmLoading={state.confirmLoading}
         onCancel={onAddUserCancel}
         okText={"Add"}
+        okButtonProps={{disabled : !valid}}
       >
-        <FormAddUser
-          dispatch={dispatch}
-          wrappedComponentRef={inst => {
-            formRef = inst;
-          }}
-        />
+        <FormAddUser/>
       </Modal>
     </span>
   );

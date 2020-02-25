@@ -2,16 +2,15 @@ import React from "react";
 
 import {Layout, Row, Col, Card, Icon, Button} from "antd";
 import { useSelector, useDispatch } from "react-redux";
-import { required,email } from "../utils/fieldValidation"
-
 import AppHeader from "./AppHeader";
 import localStoreActions from "../actions/localStorage";
 import loginActions from "../actions/login";
 import { login } from "../form/login"
-import {Field, reduxForm} from "redux-form";
+import {Field} from "redux-form";
+import {reduxForm} from "../utils/reduxFormHelpers"
 import {AInput} from "../component/antdElement";
 
-export const FormLogin=reduxForm({ form: "login"})( (props)=> {
+export const FormLogin=reduxForm(login)( (props)=> {
 
   const { invalid,handleSubmit} = props;
 
@@ -23,7 +22,6 @@ export const FormLogin=reduxForm({ form: "login"})( (props)=> {
         type="text"
         prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
         placeholder="Email"
-        validate={[required,email]}
       />
 
       <Field

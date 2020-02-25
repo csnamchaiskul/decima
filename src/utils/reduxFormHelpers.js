@@ -1,3 +1,4 @@
+import {reduxForm as orgReduxForm} from "redux-form";
 
 export const required = value => (value || typeof value === 'number' ? undefined : 'Required');
 
@@ -32,6 +33,30 @@ export const phoneNumber = value =>
     ? 'Invalid phone number, must be 10 digits'
     : undefined;
 
-export const genSyncValidate= (config)=>{
-  config.values.map()
+export const genSyncValidateFunc = (vlds)=>{
+//  console.log(vlds);
+  return (values)=>(
+
+    Object.keys(vlds).map(field => {
+
+      if(Array.isArray(vlds[field]))
+        for (const func of vlds[field]){
+          const r = func(values[field]);
+          if(r)
+            return ({[field]:r});
+        }
+
+      return {};
+
+    }).reduce((acc,curr)=>Object.assign(curr,acc),{})
+
+  )
+};
+
+export const reduxForm = (config)=> (form)=>{
+//  console.log(typeof config.validate);
+  if(config.validate && typeof config.validate === "object") {
+    config.validate = genSyncValidateFunc(config.validate);
+  }
+  return orgReduxForm(config)(form)
 };

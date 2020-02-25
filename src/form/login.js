@@ -1,12 +1,18 @@
 import loginActions from "../actions/login";
+import {required,email} from "../utils/reduxFormHelpers";
 
 export const login = {
 
-  onSubmit: (values,dispatch)=>dispatch(loginActions.getToken(values)),
+    form: "login",
 
-  validate: (values) =>({})
+    onSubmit: (values, dispatch) => dispatch(loginActions.getToken(values)),
 
-};
+    validate: {
+      email: [required,email],
+      password: [required]}
+  }
+
+;
 
 
 

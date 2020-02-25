@@ -1,67 +1,81 @@
-import React from "react";
-import { Button, Modal, Icon } from "antd";
-import { connect } from "react-redux";
+import React,{useState} from "react";
+import {Button, Modal, Icon, Form, Input} from "antd";
+import {connect, useDispatch, useSelector} from "react-redux";
 import adminActions from "../../actions/admin";
-import FormChangePassword from "./FormChangePassword";
+import {reduxForm} from "../../utils/reduxFormHelpers";
+import {addUser, changePassword} from "../../form/admin";
+import {Field, isValid,submit,reset} from "redux-form";
+import {AInput} from "../../component/antdElement";
 
-class ChangePasswordModal extends React.Component {
-  state = { visible: false, confirmLoading: false };
+export const FormChangePassword = reduxForm(changePassword)((props)=>{
+  return (
+    <form onSubmit={props.handleSubmit}>
+      <Field
+        name={"userId"}
+        type={"hidden"}
+        component={"input"}
+      />
 
-  formRef = null;
 
-  handleOk = e => {
-    this.setState({ confirmLoading: true });
-    this.props.dispatch(
-      adminActions.changePassword({
-        id: this.props.userId,
-        password: this.formRef.props.form.getFieldValue("password")
-      })
-    );
+      <Field
+        name={"password"}
+        component={AInput}
+        prefix={<Icon type="safety" style={{ color: "rgba(0,0,0,.25)" }} />}
+        type="password"
+        placeholder="Password"
+      />
+
+    </form>
+  );
+});
+
+
+
+export default function ChangePasswordModal(props) {
+  const dispatch = useDispatch();
+  const [visible,setVisible] = useState(false);
+  const [confirmLoading,setConfirmLoading] = useState(false);
+
+  const valid = useSelector(isValid(changePassword.form));
+
+
+  const handleOk = e => {
+    setConfirmLoading(true );
+    dispatch(submit(changePassword.form));
   };
 
-  handleCancel = e => {
-    this.setState({ visible: false });
+  const handleCancel = e => {
+    setVisible( false );
   };
 
-  render() {
-    // const [visible,setVisible] = useState(false);
-    // const [confirmLoading, setConfirmLoading] = useState(false);
+  return (
+    <span>
+      <Button
+        ghost
+        size={"small"}
+        type="primary"
+        onClick={e => {
+          dispatch(reset(changePassword.form));
+          setVisible(true );
+        }}
+      >
+        <Icon type={"safety"} />
+      </Button>
 
-    return (
-      <span>
-        <Button
-          ghost
-          size={"small"}
-          type="primary"
-          onClick={e => {
-            this.setState({ visible: true });
-            console.log(this.state);
-          }}
-        >
-          <Icon type={"key"} />
-        </Button>
+      <Modal
+        title={"Change Password of " + props.email}
+        visible={visible}
+        onOk={handleOk}
+        confirmLoading={confirmLoading}
+        onCancel={handleCancel}
+        okText={"Change"}
+        okButtonProps={{disabled:!valid}}
+      >
+        <FormChangePassword
+          initialValues={{userId:props.userId}}
+        />
+      </Modal>
+    </span>
+  );
 
-        <Modal
-          title={"Change Password of " + this.props.email}
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          confirmLoading={this.state.confirmLoading}
-          onCancel={this.handleCancel}
-          okText={"Change"}
-        >
-          <FormChangePassword
-            key={this.props.key}
-            dispatch={this.props.dispatch}
-            wrappedComponentRef={inst => {
-              this.formRef = inst;
-            }}
-          />
-        </Modal>
-      </span>
-    );
-  }
 }
-
-export default connect(null, dispatch => ({ dispatch: dispatch }))(
-  ChangePasswordModal
-);
