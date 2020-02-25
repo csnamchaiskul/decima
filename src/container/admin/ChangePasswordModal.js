@@ -72,6 +72,7 @@ export default function ChangePasswordModal(props) {
         okButtonProps={{disabled:!valid}}
       >
         <FormChangePassword
+          key={props.userId}
           initialValues={{userId:props.userId}}
         />
       </Modal>
