@@ -11,7 +11,7 @@ const columns = [
     key: "view",
     render: (text, record) => (
       <Link
-        to={pathActions.Application({payload: { userId: record.userId } })}
+        to={pathActions.Application({ payload: { userId: record.userId } })}
       >
         <Icon type={"eye"} />
       </Link>

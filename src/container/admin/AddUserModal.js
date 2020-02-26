@@ -1,29 +1,26 @@
 import React, { useState } from "react";
-import {Button, Form, Icon, Input, Modal} from "antd";
+import { Button, Form, Icon, Input, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import adminActions from "../../actions/admin";
 //import FormAddUser from "./FormAddUser";
 import { newObject } from "reduxaga";
-import {reduxForm} from "../../utils/reduxFormHelpers";
-import {submit, isValid} from "redux-form";
-import {addUser} from "../../form/admin";
-import {AInput} from "../../component/antdElement";
-import {Field} from "redux-form";
+import { reduxForm } from "../../utils/reduxFormHelpers";
+import { submit, isValid } from "redux-form";
+import { addUser } from "../../form/admin";
+import { AInput } from "../../component/antdElement";
+import { Field } from "redux-form";
 
-export const FormAddUser = reduxForm(addUser)((props)=> {
-
-  const { handleSubmit} = props;
+export const FormAddUser = reduxForm(addUser)(props => {
+  const { handleSubmit } = props;
 
   return (
-
     <form onSubmit={handleSubmit}>
       <Field
         name={"email"}
         component={AInput}
         type={"text"}
-        prefix={<Icon type="user" style={{color: "rgba(0,0,0,.25)"}}/>}
+        prefix={<Icon type="user" style={{ color: "rgba(0,0,0,.25)" }} />}
         placeholder={"Email"}
-
       />
 
       <Field
@@ -31,14 +28,11 @@ export const FormAddUser = reduxForm(addUser)((props)=> {
         component={AInput}
         type={"password"}
         placeholder={"Password"}
-        prefix={<Icon type="lock" style={{color: "rgba(0,0,0,.25)"}}/>}
+        prefix={<Icon type="lock" style={{ color: "rgba(0,0,0,.25)" }} />}
       />
-
     </form>
   );
-
 });
-
 
 export default function AddUserModal(props) {
   const dispatch = useDispatch();
@@ -75,9 +69,7 @@ export default function AddUserModal(props) {
 
   return (
     <span>
-      <Button type="primary"
-              onClick={onAddUserButtonClick}
-      >
+      <Button type="primary" onClick={onAddUserButtonClick}>
         <Icon type={"user-add"} />
       </Button>
       <Modal
@@ -87,9 +79,9 @@ export default function AddUserModal(props) {
         confirmLoading={state.confirmLoading}
         onCancel={onAddUserCancel}
         okText={"Add"}
-        okButtonProps={{disabled : !valid}}
+        okButtonProps={{ disabled: !valid }}
       >
-        <FormAddUser/>
+        <FormAddUser />
       </Modal>
     </span>
   );

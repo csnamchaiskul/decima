@@ -31,8 +31,13 @@ function App(props) {
   });
 
   return (
-    <Spin tip={"Loading"} spinning={useSelector(appActions.selector("loading"))}>
-      {pathActions.getTargetContainer(useSelector(pathActions.selector("type")))}
+    <Spin
+      tip={"Loading"}
+      spinning={useSelector(appActions.selector("loading"))}
+    >
+      {pathActions.getTargetContainer(
+        useSelector(pathActions.selector("type"))
+      )}
     </Spin>
   );
 }

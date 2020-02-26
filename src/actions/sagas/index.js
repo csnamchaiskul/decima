@@ -27,7 +27,6 @@ export default function* rootSaga() {
 }
 
 export function* apiCall(method, args) {
-
   try {
     if (!args.accessToken) {
       console.log(yield select(loginActions.selector()));

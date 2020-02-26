@@ -1,7 +1,14 @@
-import {Form, Input, Radio, Select, Checkbox, DatePicker} from "antd";
+import { Form, Input, Radio, Select, Checkbox, DatePicker } from "antd";
 import React from "react";
 
-export const makeField = Component => ({ input, meta, children, hasFeedback, label, ...rest }) => {
+export const makeField = Component => ({
+  input,
+  meta,
+  children,
+  hasFeedback,
+  label,
+  ...rest
+}) => {
   const hasError = meta.touched && meta.invalid;
   return (
     <Form.Item

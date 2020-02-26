@@ -1,18 +1,17 @@
 import React from "react";
 
-import {Layout, Row, Col, Card, Icon, Button} from "antd";
+import { Layout, Row, Col, Card, Icon, Button } from "antd";
 import { useSelector, useDispatch } from "react-redux";
 import AppHeader from "./AppHeader";
 import localStoreActions from "../actions/localStorage";
 import loginActions from "../actions/login";
-import { login } from "../form/login"
-import {Field} from "redux-form";
-import {reduxForm} from "../utils/reduxFormHelpers"
-import {AInput} from "../component/antdElement";
+import { login } from "../form/login";
+import { Field } from "redux-form";
+import { reduxForm } from "../utils/reduxFormHelpers";
+import { AInput } from "../component/antdElement";
 
-export const FormLogin=reduxForm(login)( (props)=> {
-
-  const { invalid,handleSubmit} = props;
+export const FormLogin = reduxForm(login)(props => {
+  const { invalid, handleSubmit } = props;
 
   return (
     <form onSubmit={handleSubmit}>
@@ -32,18 +31,12 @@ export const FormLogin=reduxForm(login)( (props)=> {
         placeholder="Password"
       />
 
-      <Button
-        type="primary"
-        htmlType="submit"
-        disabled={invalid}
-      >
+      <Button type="primary" htmlType="submit" disabled={invalid}>
         Log in
       </Button>
-
     </form>
   );
 });
-
 
 export default function Login(props) {
   const email = useSelector(localStoreActions.selector("email"));
@@ -63,7 +56,8 @@ export default function Login(props) {
               <FormLogin
                 onSubmit={login.onSubmit}
                 validate={login.validate}
-                initialValues={{email:email}} />
+                initialValues={{ email: email }}
+              />
             </Card>
           </Col>
           <Col span={8} />

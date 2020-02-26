@@ -7,8 +7,8 @@ import { localStorePersistConfig } from "../config/configPersist";
 import rootSagas from "./sagas";
 
 export const rootReducer = {
-  [appActions.nameSpace] : appActions.reducer,
-  [loginActions.nameSpace] : loginActions.reducer,
+  [appActions.nameSpace]: appActions.reducer,
+  [loginActions.nameSpace]: loginActions.reducer,
   [adminActions.nameSpace]: adminActions.reducer,
   [localStorageActions.nameSpace]: persistReducer(
     localStorePersistConfig,

@@ -4,7 +4,7 @@ import { createStore, applyMiddleware, combineReducers } from "redux";
 
 import createSagaMiddleware from "redux-saga";
 import pathActions from "../actions/path";
-import { reducer as formReducer } from 'redux-form'
+import { reducer as formReducer } from "redux-form";
 
 // Redux persist
 import { persistReducer, persistStore } from "redux-persist";
@@ -23,7 +23,7 @@ const localStoreReducer = localStoreActGen.reducer;
 
 export let store;
 
-export default (preloadedState) => {
+export default preloadedState => {
   const {
     reducer: routerReducer,
     middleware: routerMiddleware,
